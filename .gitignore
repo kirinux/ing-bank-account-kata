@@ -1,0 +1,28 @@
+# Compiled class file
+*.class
+
+# Log file
+*.log
+
+# Maven
+target/
+
+# Gradle
+.gradle
+**/build/
+!src/**/build/
+
+# IntelliJ idea
+*.iml
+.idea/
+
+# Eclipse
+.settings/
+.classpath
+.project
+
+# VSCode
+.vscode/
+
+# MacOS
+.DS_Store
