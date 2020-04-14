@@ -60,11 +60,15 @@ Les fonctionnalités suivantes sont des propositions de features optionnelles à
 
 **API**
 Exposer nos 3 use case via une API accessible en HTTP
+
 **Sécuriser l'API**
 Si vous avez choisis d'exposer les services via une API, proposer une méthode de sécurisation de cette API
+
 **Non blocking API**
 Si vous avez choisis d'exposer les services via une API, proposer une implémentation non bloquantes de ces services
+
 **Tests métiers (BDD)**
 Ajouter des tests BDD à votre application.
+
 **Gradle ou Maven**
 Si vous le souhaitez vous pouvez migrer vers Gradle et nous expliquer pourquoi
