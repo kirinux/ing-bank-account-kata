@@ -3,14 +3,14 @@
 
 ## Consignes
 Le Kata suivant est composé d'une partie obligatoire, le [Minimum Valuable Product ou MVP](#minimum-valuable-product)
-et des [features facultatives](#features-bonus) afin d'utiliser le temps restant pour vous démarquer.
-S'il vous manque une information, faites un choix et restez cohérent avec celui-ci.
+et des [features facultatives](#features-bonus) afin d'utiliser le temps restant pour vous démarquer.  
+S'il vous manque une information, faites un choix et restez cohérent avec celui-ci.  
 _Faites attention à la taille de vos commits et leurs messages._
 
 **Il n'y à pas de "bonne" façon de réaliser ce Kata, nous sommes intéressés par votre choix d'implémentation, votre technique et le respect des contraintes.**
 
 ### Livraison
-Le Kata devra être fourni sous forme d'un repository [github](https://github.com) ou bien faire l'objet d'une *Pull Request* vers le [repository d'origine](https://github.com/kirinux/ing-bank-account-kata).
+Le Kata devra être fourni sous forme d'un repository [github](https://github.com) ou bien faire l'objet d'une *Pull Request* vers le [repository d'origine](https://github.com/kirinux/ing-bank-account-kata).  
 Votre repository doit contenir un fichier `readme.md` qui explique les possibles subtilités de votre implémentation et comment lancer votre projet.
 
 ### Contraintes techniques
@@ -30,7 +30,7 @@ Votre repository doit contenir un fichier `readme.md` qui explique les possibles
 > En tant que banque, j'offre la possibilité à mon client de consulter le solde de son compte
 
 ### Features bonus
-Les fonctionnalités suivantes sont optionnelles et non exhaustives.
+Les fonctionnalités suivantes sont optionnelles et non exhaustives.  
 Elles n'ont pas de priorité entre elles, vous pouvez implémenter celles qui vous intéressent ou même en proposer d'autres.
 
 #### API REST
