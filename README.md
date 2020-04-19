@@ -15,7 +15,7 @@ Votre repository doit contenir un fichier `readme.md` qui explique les possibles
 
 ### Contraintes techniques
 * Java@8 minimum
-* junit@5 + AssertJ@3
+* JUnit@5 + AssertJ@3
 
 ## Le Kata
 ### Minimum Valuable Product
@@ -28,6 +28,9 @@ Votre repository doit contenir un fichier `readme.md` qui explique les possibles
 
 #### User Story 3
 > En tant que banque, j'offre la possibilité à mon client de consulter le solde de son compte
+
+#### User Story 4
+> En tant que banque, j'offre la possibilité à mon client de consulter l'historique des transactions sur son compte
 
 ### Features bonus
 Les fonctionnalités suivantes sont optionnelles et non exhaustives.  
@@ -51,3 +54,4 @@ Elles n'ont pas de priorité entre elles, vous pouvez implémenter celles qui vo
 #### Build
 * Utiliser Gradle au lieu de Maven
 * Proposer un system de build pour le projet
+* Lancer des tests End to End
