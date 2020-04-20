@@ -10,8 +10,10 @@ _Faites attention à la taille de vos commits et leurs messages._
 **Il n'y à pas de "bonne" façon de réaliser ce Kata, nous sommes intéressés par votre choix d'implémentation, votre technique et le respect des contraintes.**
 
 ### Livraison
-Le Kata devra être fourni sous forme d'un repository [github](https://github.com) ou bien faire l'objet d'une *Pull Request* vers le [repository d'origine](https://github.com/kirinux/ing-bank-account-kata).  
-Votre repository doit contenir un fichier `readme.md` qui explique les possibles subtilités de votre implémentation et comment lancer votre projet.
+Le Kata devra être fourni sous forme d'un repository [Github](https://github.com) ou bien faire l'objet d'une *Pull Request* vers la branche [develop](https://github.com/kirinux/ing-bank-account-kata/tree/develop) du [repository d'origine](https://github.com/kirinux/ing-bank-account-kata).  
+Votre repository doit contenir : 
+* Une branche qui a pour nom, votre `trigramme` reçu par mail, qui contiendra votre code source final.
+* Un fichier `readme.md` qui explique les possibles subtilités de votre implémentation et comment lancer votre projet.
 
 ### Contraintes techniques
 * Java@8 minimum
@@ -54,4 +56,4 @@ Elles n'ont pas de priorité entre elles, vous pouvez implémenter celles qui vo
 #### Build
 * Utiliser Gradle au lieu de Maven
 * Proposer un system de build pour le projet
-* Lancer des tests End to End
+* Proposer des tests End to End à destination de votre livrable
