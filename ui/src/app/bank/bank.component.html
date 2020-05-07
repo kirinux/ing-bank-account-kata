@@ -1,0 +1,122 @@
+<br>
+
+<div class="container">
+  <h6>Select a Bank</h6>
+  <table class="table">
+    <thead>
+    <tr>
+      <th>#</th>
+      <th>Name</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr (click)="switchBank(bank)"
+        *ngFor="let bank of banks"
+        [class.table-primary]="selectedBank == bank">
+      <td>{{ bank.id }}</td>
+      <td>{{ bank.name }}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<br>
+<br>
+
+<div *ngIf="customers" class="container">
+  <h6>Select a Customer</h6>
+  <table class="table">
+    <thead>
+    <tr>
+      <th>#</th>
+      <th>Name</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr (click)="switchCustomer(customer)"
+        *ngFor="let customer of customers"
+        [class.table-primary]="selectedCustomer == customer">
+      <td>{{ customer.id }}</td>
+      <td>{{ customer.name }}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<br>
+<br>
+
+<div *ngIf="selectedCustomer && accounts" class="container">
+  <h6>Select an Account</h6>
+  <table class="table">
+    <thead>
+    <tr>
+      <th>#</th>
+      <th>Balance</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr (click)="switchAccount(account)" *ngFor="let account of accounts"
+        [class.table-primary]="selectedAccount == account">
+      <td>{{ account.id }}</td>
+      <td>{{ account.balance }}</td>
+    </tr>
+    </tbody>
+  </table>
+
+  <br>
+  <div *ngIf="selectedAccount">
+    <h6>Current Balance:  {{selectedAccount?.balance}}</h6>
+    <div>
+      <div class="input-group mb-2">
+        <input #deposit class="form-control col-sm-2 mr-1" placeholder="Amount" type="number">
+        <span class="input-group-btn">
+           <button (click)="depositMoney(deposit)" class="btn btn-primary" type="button">Deposit Money</button>
+        </span>
+      </div>
+    </div>
+    <div>
+      <div class="input-group mb-2">
+        <input #withdraw class="form-control col-sm-2 mr-1" placeholder="Amount" type="number">
+        <span class="input-group-btn">
+           <button (click)="withdrawMoney(withdraw)" class="btn btn-primary" type="button">Withdraw Money</button>
+        </span>
+      </div>
+    </div>
+    <div>
+      <div class="input-group ">
+        <span class="input-group-btn">
+           <button (click)="getTransactionsHistory()" class="btn btn-primary"
+                   type="button">Show Transactions History</button>
+        </span>
+      </div>
+    </div>
+
+    <br>
+
+    <div *ngIf="selectedAccount && transactions" class="container">
+      <h6>Transactions</h6>
+      <table class="table">
+        <thead>
+        <tr>
+          <th>#</th>
+          <th>Amount</th>
+          <th>Transaction Date</th>
+          <th>isDeposit</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let transaction of transactions; index as i">
+          <td>{{ i + 1 }}</td>
+          <td>{{ transaction.amount }}</td>
+          <td>{{ transaction.date | date:'short'}}</td>
+          <td>{{ transaction.deposit}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+
+  </div>
+</div>
+
