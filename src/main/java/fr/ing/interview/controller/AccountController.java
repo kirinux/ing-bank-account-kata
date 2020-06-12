@@ -1,6 +1,7 @@
 package fr.ing.interview.controller;
 
-import fr.ing.interview.dto.TransferDto;
+import fr.ing.interview.dto.TransferRequestDto;
+import fr.ing.interview.dto.TransferResponseDto;
 import fr.ing.interview.service.AccountService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,8 +20,8 @@ public class AccountController {
     }
 
     @PostMapping("deposit")
-    public ResponseEntity<Boolean> deposit(@RequestBody TransferDto transferDto) {
-        return ResponseEntity.ok(true);
+    public ResponseEntity<TransferResponseDto> deposit(@RequestBody TransferRequestDto transferRequestDto) {
+        return ResponseEntity.ok(accountService.deposit(transferRequestDto));
     }
 
 }
