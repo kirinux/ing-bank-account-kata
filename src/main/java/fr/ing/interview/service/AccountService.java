@@ -54,4 +54,13 @@ public class AccountService {
         accountRepository.save(account);
     }
 
+    public BigDecimal balance(Long accountId) throws BankAccountException {
+        Optional<Account> accountOptional = accountRepository.findById(accountId);
+        if (accountOptional.isEmpty()) {
+            throw new NonexistentAccountException();
+        }
+
+        return accountOptional.get().getBalance();
+    }
+
 }

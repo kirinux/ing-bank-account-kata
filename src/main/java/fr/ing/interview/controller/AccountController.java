@@ -5,10 +5,9 @@ import fr.ing.interview.dto.TransferRequestDto;
 import fr.ing.interview.exception.BankAccountException;
 import fr.ing.interview.service.AccountService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.math.BigDecimal;
 
 @RestController()
 @RequestMapping("account")
@@ -36,6 +35,17 @@ public class AccountController {
         try {
             accountService.withdraw(transferRequestDto);
             return ResponseEntity.ok().build();
+        } catch (BankAccountException e) {
+            ErrorDto errorDto = ErrorDto.builder().errorMessage(e.getMessage()).build();
+            return ResponseEntity.ok(errorDto);
+        }
+    }
+
+    @GetMapping("balance/{accountId}")
+    public ResponseEntity<?> balance(@PathVariable("accountId") Long accountId) {
+        try {
+            BigDecimal balance = accountService.balance(accountId);
+            return ResponseEntity.ok(balance);
         } catch (BankAccountException e) {
             ErrorDto errorDto = ErrorDto.builder().errorMessage(e.getMessage()).build();
             return ResponseEntity.ok(errorDto);
