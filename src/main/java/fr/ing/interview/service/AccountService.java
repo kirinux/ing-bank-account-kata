@@ -18,6 +18,8 @@ public class AccountService {
 
     private static final String ERROR_INEXISTANT_ACCOUNT = "Account does not exist";
 
+    private static final String ERROR_ACCOUNT_BALANCE_TOO_LOW = "Account balance is too low";
+
     private final AccountRepository accountRepository;
 
     public AccountService(AccountRepository accountRepository) {
@@ -41,6 +43,31 @@ public class AccountService {
             }
         } else {
             response = TransferResponseDto.builder().success(false).message(ERROR_DEPOSIT_TOO_LOW).build();
+        }
+
+        return response;
+    }
+
+    public TransferResponseDto withdraw(TransferRequestDto transferRequestDto) {
+        TransferResponseDto response;
+
+        Optional<Account> accountOptional = accountRepository.findById(transferRequestDto.getAccountId());
+
+        if (accountOptional.isPresent()) {
+            Account account = accountOptional.get();
+
+            BigDecimal newBalance = account.getBalance().subtract(transferRequestDto.getAmount());
+            if (newBalance.compareTo(BigDecimal.ZERO) >= 0) {
+                account.setBalance(newBalance);
+                accountRepository.save(account);
+
+                response = TransferResponseDto.builder().success(true).build();
+            } else {
+                response = TransferResponseDto.builder().success(false).message(ERROR_ACCOUNT_BALANCE_TOO_LOW).build();
+            }
+
+        } else {
+            response = TransferResponseDto.builder().success(false).message(ERROR_INEXISTANT_ACCOUNT).build();
         }
 
         return response;
