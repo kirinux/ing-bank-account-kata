@@ -104,4 +104,28 @@ class AccountServiceTest {
         // Then
         assertThat(thrown.getMessage(), is(equalTo("not enough balance in account to withdraw !")));
     }
+
+    @Test
+    void should_get_balance_() throws ServiceException {
+        // Given
+        String accountNumber = "123456";
+        double initialBalance = 50.0;
+        Account account = new Account(accountNumber, initialBalance);
+        when(accountDao.getAccount(accountNumber)).thenReturn(account);
+        // When
+        double balance = accountService.getBalance(accountNumber);
+        // Then
+        assertThat(balance, is(equalTo(initialBalance)));
+    }
+
+    @Test
+    void should_get_balance_throws_exception_when_account_not_found() {
+        // Given
+        String accountNumber = "123456";
+        when(accountDao.getAccount(accountNumber)).thenReturn(null);
+        // When
+        ServiceException thrown = Assertions.assertThrows(ServiceException.class, () -> accountService.getBalance(accountNumber));
+        // Then
+        assertThat(thrown.getMessage(), is(equalTo("account not found !")));
+    }
 }

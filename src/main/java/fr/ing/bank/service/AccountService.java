@@ -20,15 +20,6 @@ public class AccountService {
         this.accountDao = accountDao;
     }
 
-    public Account getAccount(String accountNumber) throws ServiceException {
-        Account account = accountDao.getAccount(accountNumber);
-        if (account == null) {
-            log.error("account not found !");
-            throw new ServiceException("account not found !");
-        }
-        return account;
-    }
-
     public void deposit(String accountNumber, double amount) throws ServiceException {
         Account account = getAccount(accountNumber);
         if (amount <= MINIMUM_DEPOSIT_AMOUNT) {
@@ -45,5 +36,19 @@ public class AccountService {
             throw new ServiceException("not enough balance in account to withdraw !");
         }
         account.withdraw(amount);
+    }
+
+    public double getBalance(String accountNumber) throws ServiceException {
+        Account account = getAccount(accountNumber);
+        return account.getBalance();
+    }
+
+    private Account getAccount(String accountNumber) throws ServiceException {
+        Account account = accountDao.getAccount(accountNumber);
+        if (account == null) {
+            log.error("account not found !");
+            throw new ServiceException("account not found !");
+        }
+        return account;
     }
 }
