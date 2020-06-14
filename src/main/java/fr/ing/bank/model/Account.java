@@ -26,9 +26,15 @@ public class Account {
         return balance;
     }
 
-    public void deposit(double amount) {
+    public synchronized void deposit(double amount) {
         this.balance += amount;
         log.info("depositing the amount : " + amount);
+        log.info("updated balance :  " + this.balance);
+    }
+
+    public synchronized void withdraw(double amount) {
+        this.balance -= amount;
+        log.info("successfully withdraw amount : {} from account: {} ", amount, accountNumber);
         log.info("updated balance :  " + this.balance);
     }
 }

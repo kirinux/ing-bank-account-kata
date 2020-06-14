@@ -37,4 +37,13 @@ public class AccountService {
         }
         account.deposit(amount);
     }
+
+    public void withdraw(String accountNumber, double amount) throws ServiceException {
+        Account account = getAccount(accountNumber);
+        if (amount > account.getBalance()) {
+            log.error("not enough balance in account: {} to withdraw !", accountNumber);
+            throw new ServiceException("not enough balance in account to withdraw !");
+        }
+        account.withdraw(amount);
+    }
 }
