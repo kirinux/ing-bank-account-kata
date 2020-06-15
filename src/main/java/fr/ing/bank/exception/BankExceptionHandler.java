@@ -15,7 +15,7 @@ public class BankExceptionHandler {
     @ExceptionHandler(ServiceException.class)
     public ResponseEntity<ErrorDetails> handleServiceException(ServiceException exception) {
         ErrorCatalog errorCatalog = exception.getErrorCatalog();
-        ErrorDetails errorDetails = new ErrorDetails(errorCatalog);
+        ErrorDetails errorDetails = new ErrorDetails(errorCatalog.getCode(), exception.getMessage());
         return ResponseEntity.status(getHttpStatus(errorCatalog)).body(errorDetails);
     }
 

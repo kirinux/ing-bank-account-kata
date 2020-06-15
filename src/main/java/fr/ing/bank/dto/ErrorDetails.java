@@ -1,6 +1,5 @@
 package fr.ing.bank.dto;
 
-import fr.ing.bank.exception.ErrorCatalog;
 import lombok.Data;
 
 @Data
@@ -15,8 +14,4 @@ public class ErrorDetails {
         this.message = message;
     }
 
-    public ErrorDetails(ErrorCatalog errorCatalog) {
-        this.code = errorCatalog.getCode();
-        this.message = errorCatalog.getMessage();
-    }
 }
