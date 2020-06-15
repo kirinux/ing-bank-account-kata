@@ -16,7 +16,7 @@ public class Account {
     public synchronized void deposit(double amount) {
         balance = balance + amount;
     }
-    public synchronized Integer withdraw(double amount) {
+    public synchronized void withdraw(double amount) {
         balance = balance - amount; 
     }
 }
