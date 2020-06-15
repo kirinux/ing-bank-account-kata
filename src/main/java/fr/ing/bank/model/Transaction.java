@@ -1,24 +1,25 @@
 package fr.ing.bank.model;
 
-import lombok.Getter;
+import lombok.Data;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Getter
+@Data
+@Entity
 public class Transaction {
 
-    private String accountNumber;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
+    @ManyToOne
+    private Account account;
+
+    @Enumerated(EnumType.STRING)
     private TransactionType transactionType;
 
     private double amount;
 
     private LocalDateTime date;
-
-    public Transaction(String accountNumber, TransactionType transactionType, double amount, LocalDateTime date) {
-        this.accountNumber = accountNumber;
-        this.transactionType = transactionType;
-        this.amount = amount;
-        this.date = date;
-    }
 }

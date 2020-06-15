@@ -1,8 +1,18 @@
 package fr.ing.bank.exception;
 
-public class ServiceException extends Exception {
+import lombok.Getter;
 
-    public ServiceException(String message) {
+@Getter
+public class ServiceException extends RuntimeException {
+
+    private final ErrorCatalog errorCatalog;
+
+    public ServiceException(ErrorCatalog errorCatalog, String message) {
         super(message);
+        this.errorCatalog = errorCatalog;
+    }
+
+    public ServiceException(ErrorCatalog errorCatalog) {
+        this(errorCatalog, errorCatalog.getMessage());
     }
 }
