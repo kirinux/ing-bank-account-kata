@@ -1,0 +1,7 @@
+  
+CREATE TABLE ACCOUNT (
+  codeClient INT AUTO_INCREMENT  PRIMARY KEY,
+  numAccount BIGINT NOT NULL,
+  solde DOUBLE NOT NULL
+);
+
