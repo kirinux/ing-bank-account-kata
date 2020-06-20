@@ -4,27 +4,43 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@Setter
-@Getter
-@AllArgsConstructor
+
+@Entity
 public class Account implements Serializable{
 
+    @Id
+    @GeneratedValue
     private int idAccount;
+
     private double balance;
     private Customer idClient;
+    @OneToMany(mappedBy = "account")
     private List<Transaction> transactions;
     private double overdraft;
     private Date creationDate;
+
+    @ManyToOne
+    @JoinColumn(name="ID_CUSTOMER")
+    private Customer customer;
 
 
     public Account() {
     }
 
-    public Account(int idAccount, long amount,int idClient) {
+    public Account(int idAccount, double balance, List<Transaction> transactions) {
+        this.idAccount = idAccount;
+        this.balance = balance;
+        this.transactions = transactions;
+
+    }
+
+    public Account(int idAccount, long amount, int idClient) {
         this.idAccount = idAccount;
         this.balance = amount;
     }
@@ -66,6 +82,7 @@ public class Account implements Serializable{
     }
 
     public List<Transaction> getTransactions() {
+        if(this.transactions == null) return new ArrayList<>();
         return transactions;
     }
 

@@ -1,24 +1,50 @@
 package fr.ing.interview.bankaccountkata.model;
 
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
+@Entity
 public class Customer implements Serializable{
 
-    private int idustomer;
+    @Id
+    @GeneratedValue
+    private int idCustomer;
+
     private String firstName;
     private String lastName;
     private String adress;
     private String email;
-    private Account account;
+    @OneToMany(mappedBy = "customer",fetch = FetchType.LAZY)
     private List<Account> accounts;
 
-    public int getIdustomer() {
-        return idustomer;
+    public Customer() {
     }
 
-    public void setIdustomer(int idustomer) {
-        this.idustomer = idustomer;
+    public Customer(int idCustomer, String email, List<Account> accounts) {
+        this.idCustomer = idCustomer;
+        this.email = email;
+        this.accounts = accounts;
+    }
+
+    public Customer(int idCustomer, String firstName, String lastName, String adress, String email, Account account, List<Account> accounts) {
+        this.idCustomer = idCustomer;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.adress = adress;
+        this.email = email;
+
+        this.accounts = accounts;
+    }
+
+    public int getIdCustomer() {
+        return idCustomer;
+    }
+
+    public void setIdCustomer(int idustomer) {
+        this.idCustomer = idustomer;
     }
 
     public String getFirstName() {
@@ -53,13 +79,6 @@ public class Customer implements Serializable{
         this.email = email;
     }
 
-    public Account getAccount() {
-        return account;
-    }
-
-    public void setAccount(Account account) {
-        this.account = account;
-    }
 
     public List<Account> getAccounts() {
         return accounts;

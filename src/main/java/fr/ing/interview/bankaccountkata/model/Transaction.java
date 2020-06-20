@@ -1,19 +1,29 @@
 package fr.ing.interview.bankaccountkata.model;
 
+import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 
+
+@Entity
 public class Transaction implements Serializable{
+    @Id
+    @GeneratedValue
+    private Long idTransaction;
 
     private Long operationNumber;
     private Date operationDate;
     private double amount;
+    @ManyToOne
+    @JoinColumn(name="ID_ACCOUNT")
     private Account account;
+    private EnumTransactionType transactionType;
 
     public Transaction() {
     }
 
-    public Transaction(Long operationNumber, Date operationDate, double amount, Account account) {
+    public Transaction(Long operationNumber, LocalDate now, double amount, Account account) {
         this.operationNumber = operationNumber;
         this.operationDate = operationDate;
         this.amount = amount;
