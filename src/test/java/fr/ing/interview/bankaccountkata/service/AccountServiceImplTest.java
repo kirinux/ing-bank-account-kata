@@ -1,44 +1,42 @@
 package fr.ing.interview.bankaccountkata.service;
 
+import fr.ing.interview.bankaccountkata.exception.OperationNotAllowedException;
 import fr.ing.interview.bankaccountkata.model.Account;
 import fr.ing.interview.bankaccountkata.model.Customer;
 import fr.ing.interview.bankaccountkata.model.Transaction;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.event.annotation.BeforeTestClass;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
-
-
-
+@ActiveProfiles("test")
+@SpringBootTest
 class AccountServiceImplTest {
 
     @Autowired
-    AccountService accountService;
+    AccountServiceImpl accountServices;
 
 
 
 
     @BeforeTestClass
     public void init(){
-        accountService = new AccountServiceImpl();
      }
 
 
 
     @Test
     void shouldUpdateAmountWhenDeposit() throws Exception {
-        Account account = new Account(1, 100.0, null,new ArrayList<Transaction>(), 100.0, null);
-        AccountService  accountServices = new AccountServiceImpl();
+        Account account = new Account(1, 100.0, new ArrayList<Transaction>(), 100.0, null);
+       // AccountService  accountServices = new AccountServiceImpl();
         accountServices.deposit(100,account);
         assertEquals(account.getBalance(),200.0 );
     }
@@ -46,29 +44,30 @@ class AccountServiceImplTest {
 
     @Test
     void shouldRiseExceptionWhenDeposit() throws Exception {
-        Account account = new Account(1, 100.0, null,new ArrayList<Transaction>(), 100.0, null);
-        assertThatThrownBy(()->{ accountService.deposit(100,account);}).isInstanceOf(Exception.class);
+        Account account = new Account(1, 100.0, new ArrayList<Transaction>(), 100.0, null);
+        assertThatThrownBy(()->{ accountServices.deposit(0.001,account);}).isInstanceOf(OperationNotAllowedException.class);
     }
 
     @Test
     void shouldSaveTransactionWhenDeposit() throws Exception {
-        Account account = new Account(1, 200.0, null,new ArrayList<>(), 100.0, null);
-        AccountService  accountServices = new AccountServiceImpl();
-        accountServices.withdraw(50.0,account);
+        Account account = new Account(1, 200.0, new ArrayList<>(), 100.0, null);
+      //  AccountService  accountServices = new AccountServiceImpl();
+        accountServices.deposit(50.0,account);
         assertEquals(account.getTransactions().get(0).getAmount(),50.0 );
     }
 
 
     @Test
     void shouldRiseExceptionIfNullAccountWhenDepositOverdraft() throws Exception {
-        assertThatThrownBy(()->{ accountService.withdraw(200,null);}).isInstanceOf(Exception.class);
+        assertThatThrownBy(()->{ accountServices.withdraw(200,null);}).isInstanceOf(Exception.class);
     }
 
 
     @Test
-    void shouldWithdrawMoneyFromAccount() {
-        Account account = new Account(1, 100.0, null,new ArrayList<>(), 0.0, null);
-        assertThatThrownBy(()->{ accountService.withdraw(100,account);}).isInstanceOf(Exception.class);
+    void shouldWithdrawMoneyFromAccount() throws Exception {
+        Account account = new Account(1, 100.0,  new ArrayList<>(), 0.0, null);
+        accountServices.withdraw(50.00,account);
+        assertEquals(account.getBalance(),50.0 );
 
     }
 
@@ -84,13 +83,13 @@ class AccountServiceImplTest {
         account2.setIdAccount(2);
         List<Account> accounts = Arrays.asList(account1,account2);
         Customer customer = new Customer(1,"customer1@gmail.com",accounts);
-        double balance = accountServices.getBalance(customer,1);
-        assertEquals(balance, 20.0);
+        assertEquals(account1.getBalance(), 20.0);
+        assertNotEquals(account2.getBalance(), 20.0);
     }
 
     @Test
     void shouldGetTransactions() throws Exception {
-        AccountService  accountServices = new AccountServiceImpl();
+       // AccountService  accountServices = new AccountServiceImpl();
         Account account = new Account(1, 100.0, new ArrayList<Transaction>());
         accountServices.deposit(100,account);
         accountServices.withdraw(80,account);
