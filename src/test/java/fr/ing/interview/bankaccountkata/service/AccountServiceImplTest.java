@@ -1,6 +1,7 @@
 package fr.ing.interview.bankaccountkata.service;
 
 import fr.ing.interview.bankaccountkata.model.Account;
+import fr.ing.interview.bankaccountkata.model.Transaction;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.event.annotation.BeforeTestClass;
@@ -32,7 +33,7 @@ class AccountServiceImplTest {
 
     @Test
     void shouldUpdateAmountWhenDeposit() throws Exception {
-        Account account = new Account(1, 100.0, null,null, 100.0, null);
+        Account account = new Account(1, 100.0, null,new ArrayList<Transaction>(), 100.0, null);
         AccountService  accountServices = new AccountServiceImpl();
         accountServices.deposit(100,account);
         assertEquals(account.getBalance(),200.0 );
@@ -41,14 +42,15 @@ class AccountServiceImplTest {
 
     @Test
     void shouldRiseExceptionWhenDeposit() throws Exception {
-        Account account = new Account(1, 100.0, null,null, 100.0, null);
+        Account account = new Account(1, 100.0, null,new ArrayList<Transaction>(), 100.0, null);
         assertThatThrownBy(()->{ accountService.deposit(100,account);}).isInstanceOf(Exception.class);
     }
 
     @Test
     void shouldSaveTransactionWhenDeposit() throws Exception {
-        Account account = new Account(1, 100.0, null,new ArrayList<>(), 100.0, null);
-        accountService.withdraw(200,null);
+        Account account = new Account(1, 200.0, null,new ArrayList<>(), 100.0, null);
+        AccountService  accountServices = new AccountServiceImpl();
+        accountServices.withdraw(50.0,account);
         assertEquals(account.getTransactions().get(0).getAmount(),50.0 );
 
     }

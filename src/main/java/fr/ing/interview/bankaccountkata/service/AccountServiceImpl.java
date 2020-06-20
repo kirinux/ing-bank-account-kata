@@ -9,8 +9,7 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
-@Service
-@Transactional
+
 public class AccountServiceImpl implements AccountService{
 
     public static final double AMOUNT_MIN = 0.01;
@@ -29,7 +28,11 @@ public class AccountServiceImpl implements AccountService{
         }
 
         account.setBalance((account.getBalance()+amount));
-        transactionService.addTransaction(new Transaction(1L, LocalDate.now(), amount));
+
+        Transaction t  = new Transaction(2L, LocalDate.now(), amount,account);
+        account.getTransactions().add(t);
+      //  transactionService.addTransaction( t ,account);
+
         return account ;
     }
 
@@ -46,13 +49,28 @@ public class AccountServiceImpl implements AccountService{
 
 
         account.setBalance((account.getBalance() - amount));
-        transactionService.addTransaction(new Transaction(1L, LocalDate.now(), amount));
+        Transaction t  = new Transaction(1L, LocalDate.now(), amount,account);
+        account.getTransactions().add(t);
+
+       // transactionService.addTransaction( t ,account);
 
         return account ;
     }
 
 
 
+    @Override
+    public double getBalance(int idAccount) {
+        return getAccount(idAccount).getBalance() ;
+    }
 
+
+
+    @Override
+    public void getTransactionList() {
+
+    }
+    Account getAccount(int idAccount){ return null;}
+    List<Account> getListAccounts(){ return null;}
 
 }
