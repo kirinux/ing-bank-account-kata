@@ -27,6 +27,7 @@ import java.util.Optional;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -54,7 +55,16 @@ class BankControllerTest {
     }
 
     @Test
-    void getBalance() {
+    void getBalance() throws Exception {
+
+
+        Integer id = 1;
+
+         when( accountService.getBalance(id)).thenReturn(Double.valueOf(50));
+        mvc.perform(
+                MockMvcRequestBuilders.get("/api/accounts/balance/1")
+        ).andDo(print()).andExpect(status().isOk())
+                .andExpect(content().string("50.0") );
     }
 
     @Test
@@ -88,26 +98,25 @@ class BankControllerTest {
 
     @Test
     void getTransactionsHistory() throws Exception {
+        int id=1;
         Account account = new Account(1,100,null );
-
         Transaction t1 = new Transaction(EnumTransactionType.WITH_DRAW.getValue(),   80, account, LocalDateTime.now());
         Transaction t2 = new Transaction(EnumTransactionType.DEPOSIT.getValue(),   100, account, LocalDateTime.now());
         Transaction t3 = new Transaction(EnumTransactionType.WITH_DRAW.getValue(),   40, account, LocalDateTime.now());
-
-
-
         List<Transaction> transactionsHistory = Arrays.asList(t1,t2,t3);
         Customer c = new Customer();
         c.setIdCustomer(1);
         account.setTransactions(transactionsHistory);
         c.setAccounts(Arrays.asList(account));
-        when(accountService.getTransactions(c, 1)).thenReturn(transactionsHistory);
+
+        when(accountService.getTransactions(c, id)).thenReturn(transactionsHistory);
+        when(accountService.getCustomer(id)).thenReturn(java.util.Optional.ofNullable(c));
+
         mvc.perform(
                 MockMvcRequestBuilders.get("/api/accounts/transactions-history?idCustomer=1&idAcount=1")
         ).andDo(print()).andExpect(status().isOk())
-                //.andExpect(jsonPath("$.idAccount", Matchers.is(1)))
-               // .andExpect(jsonPath("$.balance",  Matchers.is(100.0))
-                 ;
+                .andExpect(jsonPath("$.length()", Matchers.is(3)))
+                .andExpect(jsonPath("$.[0].amount", Matchers.is(80.0)));
     }
 
     @Test
