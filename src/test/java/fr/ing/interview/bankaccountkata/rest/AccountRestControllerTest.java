@@ -1,6 +1,5 @@
 package fr.ing.interview.bankaccountkata.rest;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.ing.interview.bankaccountkata.dao.AccountRepository;
 import fr.ing.interview.bankaccountkata.model.Account;
 import fr.ing.interview.bankaccountkata.model.Customer;
@@ -13,18 +12,13 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
-
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -39,10 +33,8 @@ class BankControllerTest {
 
 
     private MockMvc mvc;
-
     @InjectMocks
     private BankController bankController;
-
     @Mock
     private AccountService accountService;
     @Mock
@@ -56,11 +48,8 @@ class BankControllerTest {
 
     @Test
     void getBalance() throws Exception {
-
-
         Integer id = 1;
-
-         when( accountService.getBalance(id)).thenReturn(Double.valueOf(50));
+        when( accountService.getBalance(id)).thenReturn(Double.valueOf(50));
         mvc.perform(
                 MockMvcRequestBuilders.get("/api/accounts/balance/1")
         ).andDo(print()).andExpect(status().isOk())
@@ -79,7 +68,6 @@ class BankControllerTest {
         ).andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$.idAccount", Matchers.is(1)))
                 .andExpect(jsonPath("$.balance",  Matchers.is(150.0)));
-
     }
 
     @Test
@@ -108,7 +96,6 @@ class BankControllerTest {
         c.setIdCustomer(1);
         account.setTransactions(transactionsHistory);
         c.setAccounts(Arrays.asList(account));
-
         when(accountService.getTransactions(c, id)).thenReturn(transactionsHistory);
         when(accountService.getCustomer(id)).thenReturn(java.util.Optional.ofNullable(c));
 
@@ -130,5 +117,4 @@ class BankControllerTest {
                 .andExpect(jsonPath("$.idAccount", Matchers.is(1)))
                 .andExpect(jsonPath("$.balance",  Matchers.is(100.0)));
     }
-
 }
