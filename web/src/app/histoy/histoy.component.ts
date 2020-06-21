@@ -16,9 +16,9 @@ export class HistoyComponent implements OnInit {
   ngOnInit() {
   }
 
-  getHistory(idAccount,idCustomer){
+  getHistory(idAccount){
     let date: Date = new Date();
-    this.bankServiceService.getHistory(idAccount,idCustomer)
+    this.bankServiceService.getHistoryList(idAccount)
       .subscribe( data =>{
         this.history = data;
       },err => {console.log(err)}

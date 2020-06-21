@@ -7,14 +7,10 @@
   <label>please enter the account number :
     <input [(ngModel)]="idAccount" placeholder="Account Number"/>
   </label>
-</div><div row>
-  <label>please enter the client number :
-    <input [(ngModel)]="idCustomer" placeholder="Account Number"/>
-  </label>
 </div>
 
   <fieldset class="employer-fieldset">
-    <legend class="col-md-3 label ">history  </legend>
+    <legend class="col-md-3 label ">transaction history  </legend>
 
 
     <div class="row">
@@ -33,7 +29,7 @@
         <tr  *ngFor="let historyLine of history ; let i = index ">
           <td>{{historyLine.transactionType}}</td>
           <td>{{historyLine.amount}}</td>
-          <td>{{historyLine.operationDate |  date:'dd/MM/yy' }}
+          <td>{{historyLine.operationDate |    date:'medium'  }}
           </td>
           </tr>
 

@@ -17,6 +17,7 @@
 #### to access to the database please use the following link
     http://localhost:8080/h2-console/
     port 8080 to update with your port
+     username = ssa password = password
     
 #### start the front-end
  

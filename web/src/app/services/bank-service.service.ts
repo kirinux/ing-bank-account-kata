@@ -4,7 +4,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 @Injectable()
 export class BankServiceService {
 
-
+  url: string = "http://localhost:8080/api";
 
   constructor(private httpClient:HttpClient) { }
 
@@ -20,7 +20,7 @@ export class BankServiceService {
     };
 
     return this.httpClient
-      .get("http://localhost:8080/api/accounts/transactions-history?idCustomer="+idCustomer+"&idAcount="+idAccount,optionRequete)
+      .get(this.url+"/accounts/transactions-history?idCustomer="+idCustomer+"&idAcount="+idAccount,optionRequete)
 
   }
 
@@ -32,7 +32,7 @@ export class BankServiceService {
       })
     };
     let date: Date = new Date();
-    return this.httpClient.post("http://localhost:8080/api/accounts/deposit?amount="+amount+"&id="+idAccount,optionRequete)
+    return this.httpClient.post(this.url+"/accounts/deposit?amount="+amount+"&id="+idAccount,optionRequete)
 
   }
 
@@ -43,7 +43,7 @@ export class BankServiceService {
       })
     };
     let date: Date = new Date();
-    return this.httpClient.post("http://localhost:8080/api/accounts/withdraw?amount="+amount+"&id="+idAccount,optionRequete)
+    return this.httpClient.post(this.url+"/accounts/withdraw?amount="+amount+"&id="+idAccount,optionRequete)
 
   }
 
@@ -55,7 +55,20 @@ export class BankServiceService {
       })
     };
     let date: Date = new Date();
-    return this.httpClient.get("http://localhost:8080/api/accounts/balance/"+idAccount,optionRequete)
+    return this.httpClient.get(this.url+"/accounts/balance/"+idAccount,optionRequete)
 
   }
+  getHistoryList(idAccount){
+
+    const optionRequete = {
+      headers: new HttpHeaders({
+        'Access-Control-Allow-Origin':'*',
+        'mon-entete-personnalise':'maValeur'
+      })
+    };
+
+    return this.httpClient
+      .get(this.url+"/accounts/"+idAccount+"/history",optionRequete)
+  }
+
 }

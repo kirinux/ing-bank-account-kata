@@ -104,6 +104,8 @@ public class AccountServiceImpl implements AccountService {
         return customer.getAccounts().stream().filter(a -> a.getIdAccount() == idAccount).findFirst().get().getTransactions();
     }
 
+
+
     /***
      * get the Account by th given id
      * @param idAccount int
@@ -124,6 +126,16 @@ public class AccountServiceImpl implements AccountService {
         return customerRepository.findById(idCustomer) ;
     }
 
-
+    /***
+     * get the transaction list of client for an account
+     * @param idAccount
+     * @return  List<Transaction>
+     */
+    public List<Transaction> getTransactions(final int idAccount) {
+        Optional<Account> account = accountRepository.findById(idAccount);
+        if(account.isPresent()) return  transactionRepository.findByAccount(account.get());
+        else {throw new AccountNotFoundException(ACCOUNT_NOT_FOUND_ERROR_MSG);
+        }
+    }
 
 }

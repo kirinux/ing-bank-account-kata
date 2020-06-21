@@ -16,6 +16,7 @@ public interface AccountService {
     Account withdraw(double amount, Account account) throws AccountNotFoundException,OperationNotAllowedException;
     double getBalance(int idAccount) throws Exception;
     List<Transaction> getTransactions(Customer customer,long idAccount);
+    List<Transaction> getTransactions(int idAccount);
     Optional<Account> getAccount(int idAccount);
     Optional<Customer> getCustomer(int idCustomer);
 

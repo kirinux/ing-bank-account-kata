@@ -86,6 +86,14 @@ public class AccountRestController {
         return  ResponseEntity.ok(transactionsHistory);
     }
 
+    @CrossOrigin
+    @GetMapping(value = "/{idAccount}/history")
+    public ResponseEntity<List<Transaction>> getTransactionsHistory(@PathVariable Integer idAccount) {
+
+        List<Transaction> transactionsHistory = accountService.getTransactions(idAccount);
+        return  ResponseEntity.ok(transactionsHistory);
+    }
+
 
     @CrossOrigin
     @GetMapping(value = "/balance/{idAccount}")
