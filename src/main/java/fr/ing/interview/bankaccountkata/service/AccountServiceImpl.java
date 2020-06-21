@@ -31,8 +31,17 @@ public class AccountServiceImpl implements AccountService {
     @Autowired
     CustomerRepository customerRepository;
 
+
+    /***
+     *  withdraw the given amount save transaction then return the account with the new information
+     * @param amount
+     * @param account
+     * @return Account
+     * @throws AccountNotFoundException
+     * @throws OperationNotAllowedException
+     */
     @Override
-    public Account deposit(double amount, Account account) throws   AccountNotFoundException,OperationNotAllowedException {
+    public Account deposit(final double amount, Account account) throws   AccountNotFoundException,OperationNotAllowedException {
         if (account == null) {
             throw new AccountNotFoundException(ACCOUNT_NOT_FOUND_ERROR_MSG);
         }
@@ -47,8 +56,16 @@ public class AccountServiceImpl implements AccountService {
         return account;
     }
 
+    /***
+     *  withdraw the given amount save transaction then return the account with the new information
+     * @param amount
+     * @param account
+     * @return Account
+     * @throws AccountNotFoundException
+     * @throws OperationNotAllowedException
+     */
     @Override
-    public Account withdraw(double amount, Account account) throws AccountNotFoundException,OperationNotAllowedException {
+    public Account withdraw(final double amount, Account account) throws AccountNotFoundException,OperationNotAllowedException {
         if (account == null) {
             throw new AccountNotFoundException(ACCOUNT_NOT_FOUND_ERROR_MSG);
         }
@@ -56,21 +73,21 @@ public class AccountServiceImpl implements AccountService {
             throw new OperationNotAllowedException(INSUFFICIENT_SOLD_ERROR_MSG);
         }
         account.setBalance((account.getBalance() - amount));
-        Transaction t = new Transaction(EnumTransactionType.WITH_DRAW.getValue(),   amount, account,LocalDateTime.now());
-        account.getTransactions().add(t);
+        Transaction transaction = new Transaction(EnumTransactionType.WITH_DRAW.getValue(),   amount, account,LocalDateTime.now());
+        account.getTransactions().add(transaction);
         accountRepository.save(account);
-        transactionRepository.save(t);
+        transactionRepository.save(transaction);
         return account;
     }
 
     /***
-     *
+     *  get the sold of account from repository by given the id
      * @param idAccount
-     * @return
-     * @throws Exception
+     * @return balance of type double
+     * @throws AccountNotFoundException
      */
     @Override
-    public double getBalance( int idAccount) throws Exception {
+    public double getBalance(final int idAccount) throws AccountNotFoundException {
         Optional<Account> account = accountRepository.findById(idAccount);
         if(account.isPresent()) return account.get().getBalance();
         else {             throw new AccountNotFoundException(ACCOUNT_NOT_FOUND_ERROR_MSG);
@@ -78,19 +95,19 @@ public class AccountServiceImpl implements AccountService {
     }
 
     /***
-     *
+     * get the transaction list of client for an account
      * @param customer
      * @param idAccount
-     * @return
+     * @return  List<Transaction>
      */
-    public List<Transaction> getTransactions(Customer customer, long idAccount) {
+    public List<Transaction> getTransactions(Customer customer,final long idAccount) {
         return customer.getAccounts().stream().filter(a -> a.getIdAccount() == idAccount).findFirst().get().getTransactions();
     }
 
     /***
-     *
-     * @param idAccount
-     * @return
+     * get the Account by th given id
+     * @param idAccount int
+     * @return Optional of Customer Optional<Account>
      */
     @Override
     public Optional<Account> getAccount(int idAccount) {
@@ -98,9 +115,9 @@ public class AccountServiceImpl implements AccountService {
     }
 
     /***
-     *
-     * @param idCustomer
-     * @return
+     * get the Customer by th given id
+     * @param idCustomer int
+     * @return Optional of Customer Optional<Customer>
      */
     @Override
     public Optional<Customer> getCustomer(int idCustomer) {
