@@ -1,0 +1,200 @@
+{
+	"id": "8cc4d65c-31fd-9b3e-13b7-196b33402f31",
+	"name": "BankApiCollection",
+	"description": "",
+	"order": [
+		"24674c29-1b4c-7e63-1fd3-89c04b385565",
+		"28f2fe3f-9b9a-417d-32d5-d622417211fe",
+		"1b9b49ff-d13f-e90e-64e5-724aae944261",
+		"df4d73e8-2a8f-200b-ddf4-b379174db213",
+		"84379073-f782-d708-41a4-30832d4b0475"
+	],
+	"folders": [],
+	"folders_order": [],
+	"timestamp": 1592654611242,
+	"owner": "1990529",
+	"public": false,
+	"requests": [
+		{
+			"id": "1b9b49ff-d13f-e90e-64e5-724aae944261",
+			"headers": "",
+			"headerData": [],
+			"url": "http://localhost:8080/api/accounts/withdraw?amount=20&id=1",
+			"queryParams": [
+				{
+					"key": "amount",
+					"value": "20",
+					"equals": true,
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "id",
+					"value": "1",
+					"equals": true,
+					"description": "",
+					"enabled": true
+				}
+			],
+			"pathVariables": {},
+			"pathVariableData": [],
+			"preRequestScript": null,
+			"method": "POST",
+			"collectionId": "8cc4d65c-31fd-9b3e-13b7-196b33402f31",
+			"data": null,
+			"dataMode": "params",
+			"name": "withdraw money",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1592744490636,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {}
+		},
+		{
+			"id": "24674c29-1b4c-7e63-1fd3-89c04b385565",
+			"headers": "id: 1\namount: 200.00\n",
+			"headerData": [
+				{
+					"key": "id",
+					"value": "1",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "amount",
+					"value": "200.00",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://localhost:8080/api/accounts/deposit?amount=100.0&id=1",
+			"queryParams": [
+				{
+					"key": "amount",
+					"value": "100.0",
+					"equals": true,
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "id",
+					"value": "1",
+					"equals": true,
+					"description": "",
+					"enabled": true
+				}
+			],
+			"pathVariables": {},
+			"pathVariableData": [],
+			"preRequestScript": null,
+			"method": "POST",
+			"collectionId": "8cc4d65c-31fd-9b3e-13b7-196b33402f31",
+			"data": [
+				{
+					"key": "",
+					"value": "",
+					"description": "",
+					"type": "text",
+					"enabled": false
+				}
+			],
+			"dataMode": "params",
+			"name": "deposit money",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1592744440431,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {}
+		},
+		{
+			"id": "28f2fe3f-9b9a-417d-32d5-d622417211fe",
+			"headers": "",
+			"headerData": [],
+			"url": "http://localhost:8080/api/accounts/1",
+			"queryParams": [],
+			"pathVariables": {},
+			"pathVariableData": [],
+			"preRequestScript": null,
+			"method": "GET",
+			"collectionId": "8cc4d65c-31fd-9b3e-13b7-196b33402f31",
+			"data": null,
+			"dataMode": "params",
+			"name": "get account by id",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1592744466067,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {}
+		},
+		{
+			"id": "84379073-f782-d708-41a4-30832d4b0475",
+			"headers": "",
+			"headerData": [],
+			"url": "http://localhost:8080/api/accounts/balance/1",
+			"queryParams": [],
+			"pathVariables": {},
+			"pathVariableData": [],
+			"preRequestScript": null,
+			"method": "GET",
+			"collectionId": "8cc4d65c-31fd-9b3e-13b7-196b33402f31",
+			"data": null,
+			"dataMode": "params",
+			"name": "get balance by account id",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1592744628635,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {}
+		},
+		{
+			"id": "df4d73e8-2a8f-200b-ddf4-b379174db213",
+			"headers": "",
+			"headerData": [],
+			"url": "http://localhost:8080/api/accounts/transactions-history?idCustomer=1&idAcount=1",
+			"queryParams": [
+				{
+					"key": "idCustomer",
+					"value": "1",
+					"equals": true,
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "idAcount",
+					"value": "1",
+					"equals": true,
+					"description": "",
+					"enabled": true
+				}
+			],
+			"pathVariables": {},
+			"pathVariableData": [],
+			"preRequestScript": null,
+			"method": "GET",
+			"collectionId": "8cc4d65c-31fd-9b3e-13b7-196b33402f31",
+			"data": null,
+			"dataMode": "params",
+			"name": "get transaction history",
+			"description": " ",
+			"descriptionFormat": "html",
+			"time": 1592744523185,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {}
+		}
+	]
+}

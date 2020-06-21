@@ -32,3 +32,10 @@
      
      
    #### a postman collection for the rest api is in the resources folder
+   
+   #### Indication
+   this application don't include authentification and session, once we add it we can performe all operations without asking id
+   (Account number and Costumer number)
+   
+   if the database is empty you should excute the sql script in the resources folder
+   
