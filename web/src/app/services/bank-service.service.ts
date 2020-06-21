@@ -55,7 +55,7 @@ export class BankServiceService {
       })
     };
     let date: Date = new Date();
-    return this.httpClient.get("http://localhost:8080/api/accounts/balance/1",optionRequete)
+    return this.httpClient.get("http://localhost:8080/api/accounts/balance/"+idAccount,optionRequete)
 
   }
 }

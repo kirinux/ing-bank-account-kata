@@ -16,11 +16,11 @@ export class BalanceComponent implements OnInit {
   ngOnInit() {
   }
 
-  getBalance(idAccount,amount){
+  getBalance(idAccount){
     this.err=null;
     this.idAccount=null;
     this.bankServiceService.getBalance(idAccount).subscribe(
-      data => {this.result = data; },
+      data => {this.result = data; console.log(data)},
       err => { this.err = err; console.log(err);}
 
     )
