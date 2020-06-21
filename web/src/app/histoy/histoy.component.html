@@ -1,13 +1,17 @@
 <div class="col-sm-12">
 
   <button class="btn btn-info btn-sm clickable "
-          (click)="getHistory(idAccount);"> please enter the account number :
+          (click)="getHistory(idAccount,idCustomer);"> please enter the account number :
   </button>
-
-  <label>:
+<div row>
+  <label>please enter the account number :
     <input [(ngModel)]="idAccount" placeholder="Account Number"/>
   </label>
-
+</div><div row>
+  <label>please enter the client number :
+    <input [(ngModel)]="idCustomer" placeholder="Account Number"/>
+  </label>
+</div>
 
   <fieldset class="employer-fieldset">
     <legend class="col-md-3 label ">history  </legend>

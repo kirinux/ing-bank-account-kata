@@ -10,25 +10,17 @@ export class BankServiceService {
 
 
 
-  getHistory(idAccount){
+  getHistory(idAccount,idCustomer){
 
-    let headers = new HttpHeaders();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Accept', 'application/json');
-
-    headers.append('Access-Control-Allow-Origin', 'http://localhost:4200');
-
-
-   // headers = headers.set('Content-Type', 'application/json; charset=utf-8').append('Access-Control-Allow-Origin','*');
-    const optionRequete = {
+     const optionRequete = {
       headers: new HttpHeaders({
         'Access-Control-Allow-Origin':'*',
         'mon-entete-personnalise':'maValeur'
       })
     };
-    let date: Date = new Date();
+
     return this.httpClient
-      .get("http://localhost:8080/api/accounts/transactions-history?idCustomer=1&idAcount="+idAccount,optionRequete)
+      .get("http://localhost:8080/api/accounts/transactions-history?idCustomer="+idCustomer+"&idAcount="+idAccount,optionRequete)
 
   }
 

@@ -10,14 +10,15 @@ import {BankServiceService} from "../services/bank-service.service";
 export class HistoyComponent implements OnInit {
   history :any;
   idAccount;
+  idCustomer:number;
   constructor(private bankServiceService:BankServiceService) { }
 
   ngOnInit() {
   }
 
-  getHistory(idAccount){
+  getHistory(idAccount,idCustomer){
     let date: Date = new Date();
-    this.bankServiceService.getHistory(idAccount)
+    this.bankServiceService.getHistory(idAccount,idCustomer)
       .subscribe( data =>{
         this.history = data;
       },err => {console.log(err)}
@@ -29,13 +30,5 @@ export class HistoyComponent implements OnInit {
 }
 
 
-export class historyLine {
-  public transactionType: string;
-  public amount: number;
-  public operationDate: Date;
-  constructor( type: string,  amount: number,  operationDate: Date )
-  { this.transactionType= type
-    this.amount=amount
-      this.operationDate=operationDate}
-}
+
 
