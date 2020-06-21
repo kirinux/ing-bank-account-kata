@@ -1,9 +1,14 @@
 package fr.ing.interview.bankaccountkata.service;
 
+import fr.ing.interview.bankaccountkata.dao.AccountRepository;
+import fr.ing.interview.bankaccountkata.dao.CustomerRepository;
+import fr.ing.interview.bankaccountkata.dao.TransactionRepository;
+import fr.ing.interview.bankaccountkata.exception.AccountNotFoundException;
 import fr.ing.interview.bankaccountkata.exception.OperationNotAllowedException;
 import fr.ing.interview.bankaccountkata.model.Account;
 import fr.ing.interview.bankaccountkata.model.Customer;
 import fr.ing.interview.bankaccountkata.model.Transaction;
+import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,6 +17,8 @@ import org.springframework.test.context.event.annotation.BeforeTestClass;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -23,7 +30,12 @@ class AccountServiceImplTest {
 
     @Autowired
     AccountServiceImpl accountServices;
-
+    @Autowired
+    TransactionRepository  transactionRepository;
+    @Autowired
+    AccountRepository accountRepository;
+    @Autowired
+    CustomerRepository customerRepository;
 
 
 
@@ -103,7 +115,42 @@ class AccountServiceImplTest {
     }
 
 
+    @Test
+    void shouldGetTransactionsFromRepositoryByAccountId() throws Exception {
 
+        Account account = new Account(1, 100.0, new ArrayList<Transaction>());
+        Account account2 = new Account();
+        account2.setBalance(30.0);
+        account2.setIdAccount(200);
+        List<Account> accounts = Arrays.asList(account,account2);
+        Customer customer = new Customer(7,"customer1@gmail.com",accounts);
+        Account a = accountRepository.save(account);
+        accountServices.deposit(100,account);
+        accountServices.withdraw(80,account);
+        accountServices.deposit(20,account);
+        accountServices.withdraw(50,account);
+
+
+        List<Transaction> transactions = accountServices.getTransactions(a.getIdAccount());
+        assertNotNull(transactions);
+
+    }
+
+    @Test
+    void shouldRiseAccountNotFoundException() throws Exception {
+        Account account = new Account(1, 100.0, new ArrayList<Transaction>());
+        Account account2 = new Account();
+        account2.setBalance(30.0);
+        account2.setIdAccount(200);
+        List<Account> accounts = Arrays.asList(account,account2);
+        accountRepository.save(account);
+        accountServices.deposit(100,account);
+        accountServices.withdraw(80,account);
+        accountServices.deposit(20,account);
+        accountServices.withdraw(50,account);
+        assertThatThrownBy(()->{ accountServices.getTransactions(1000000000);}).isInstanceOf(AccountNotFoundException.class);
+
+    }
 
 
 }
