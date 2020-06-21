@@ -1,0 +1,42 @@
+<div class="col-sm-12">
+
+  <button class="btn btn-info btn-sm clickable "
+          (click)="getHistory(idAccount);"> please enter the account number :
+  </button>
+
+  <label>:
+    <input [(ngModel)]="idAccount" placeholder="Account Number"/>
+  </label>
+
+
+  <fieldset class="employer-fieldset">
+    <legend class="col-md-3 label ">history  </legend>
+
+
+    <div class="row">
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th>Operation Type</th>
+          <th>Operation amount</th>
+          <th>operation date</th>
+
+
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr  *ngFor="let historyLine of history ; let i = index ">
+          <td>{{historyLine.transactionType}}</td>
+          <td>{{historyLine.amount}}</td>
+          <td>{{historyLine.operationDate |  date:'dd/MM/yy' }}
+          </td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+
+  </fieldset>
+
+</div>

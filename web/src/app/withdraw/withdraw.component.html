@@ -1,0 +1,38 @@
+<div class="col-sm-12">
+  <legend class="col-md-3 label ">Withdraw money </legend>
+
+
+
+  <div row>
+    <label> Account number :
+      <input [(ngModel)]="idAccount" placeholder="Account Number"/>
+    </label>
+    <label> amount :
+      <input [(ngModel)]="amount" placeholder="Amount $ "/>
+    </label>
+  </div>
+  <div row >
+    <button class="btn btn-info btn-sm clickable "
+            (click)="withrawMoney(idAccount,amount);"> submit
+    </button>
+  </div>
+  <div row> .</div>
+  <fieldset class="employer-fieldset">
+
+
+    <div  *ngIf="result">
+      <label>
+        the account sold is : {{result.balance }}
+      </label>
+    </div>
+
+    <div *ngIf="err">
+      <label>
+       err : {{err.error.message }}
+      </label>
+    </div>
+
+
+  </fieldset>
+
+</div>
