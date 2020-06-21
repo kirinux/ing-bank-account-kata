@@ -19,8 +19,9 @@ import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import com.kata.error.IlegalTransException;
-import com.kata.error.IlegalTransException.ErrorAmountType;
+import com.kata.StartKataApplication;
+import com.kata.error.IllegalTransException;
+import com.kata.error.IllegalTransException.ErrorAmountType;
 import com.kata.model.Account;
 import com.kata.model.ActionType;
 import com.kata.model.Customer;
@@ -92,7 +93,7 @@ public class AccountServiceTest {
     @Test
     void test_deposit_amount_ilegal_KO() {
     	double amount = -1;
-    	IlegalTransException exception = org.junit.jupiter.api.Assertions.assertThrows(IlegalTransException.class, () -> {
+    	IllegalTransException exception = org.junit.jupiter.api.Assertions.assertThrows(IllegalTransException.class, () -> {
     		accountService.depositAndReportBalance(1L, amount);
         });
      
@@ -123,7 +124,7 @@ public class AccountServiceTest {
     @Test
     void test_withdraw_KO_amount_negative() {
     	double amount = -20.0;
-    	IlegalTransException exception= org.junit.jupiter.api.Assertions.assertThrows(IlegalTransException.class, () -> {
+    	IllegalTransException exception= org.junit.jupiter.api.Assertions.assertThrows(IllegalTransException.class, () -> {
     		accountService.withdrawAndReportBalance(1L, amount);
     	  }); 
     	 String expectedMessage = "withdraw amount should not be negative.";
@@ -135,7 +136,7 @@ public class AccountServiceTest {
     @Test
     void test_withdraw_KO_amount_out_of_range() {
     	double amount = 20.0;
-    	IlegalTransException exception= org.junit.jupiter.api.Assertions.assertThrows(IlegalTransException.class, () -> {
+    	IllegalTransException exception= org.junit.jupiter.api.Assertions.assertThrows(IllegalTransException.class, () -> {
     		accountService.withdrawAndReportBalance(1L, amount);
     	  }); 
     	 String expectedMessage = "withdraw amount should not be superior to the balance.";

@@ -9,8 +9,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.kata.error.IlegalTransException;
-import com.kata.error.IlegalTransException.ErrorAmountType;
+import com.kata.error.IllegalTransException;
+import com.kata.error.IllegalTransException.ErrorAmountType;
 import com.kata.error.ObjectNotFoundException;
 import com.kata.error.ObjectNotFoundException.ObjectType;
 import com.kata.model.Account;
@@ -37,7 +37,7 @@ public class AccountService {
 		return findAccountById(accountId).orElseThrow(()-> new ObjectNotFoundException(accountId, ObjectType.ACCOUNT)).getBalance();
 	 }
 	 
-	 public Optional<Account> findAccountById(long id) throws IlegalTransException {
+	 public Optional<Account> findAccountById(long id) throws IllegalTransException {
 		 return accountRepo.findById(id);
 	 }
 	 
@@ -45,11 +45,11 @@ public class AccountService {
 		 return accountRepo.findAccountsByCustomer(id);
 	 }
 	 
-	 public double depositAndReportBalance(long accountId, double amount) throws IlegalTransException {
+	 public double depositAndReportBalance(long accountId, double amount) throws IllegalTransException {
 			 Account account = findAccountById(accountId).orElseThrow(()-> new ObjectNotFoundException(accountId, ObjectType.ACCOUNT));
 			 if (amount <= 0.01) {
-				 logger.error("Ilegale deposite amount : " + amount);
-					throw new IlegalTransException("Ilegale deposite amount, amount should be superior to 0.01", ErrorAmountType.ILEGAL_AMOUNT);
+				 logger.error("Illegal deposite amount : " + amount);
+					throw new IllegalTransException("Illegal deposite amount, amount should be superior to 0.01", ErrorAmountType.ILEGAL_AMOUNT);
 				}
 			 //account.add(amount);
 			 account.setBalance(account.getBalance() + amount);
@@ -59,15 +59,15 @@ public class AccountService {
 			 return account.getBalance();
 	 }
 	 
-	 public double withdrawAndReportBalance(long accountId, double amount) throws IlegalTransException {
+	 public double withdrawAndReportBalance(long accountId, double amount) throws IllegalTransException {
 		 	Account account = findAccountById(accountId).orElseThrow(()-> new ObjectNotFoundException(accountId, ObjectType.ACCOUNT));
 		 	if (amount <= 0) {
 		 		logger.error("Withdraw amount : " + amount + " should not be negative");
-				throw new IlegalTransException("withdraw amount should not be negative.", ErrorAmountType.NEGATIVE_AMOUNT);
+				throw new IllegalTransException("withdraw amount should not be negative.", ErrorAmountType.NEGATIVE_AMOUNT);
 			}
 			if (amount > account.getBalance()) {
-				logger.error("Ilegale withdraw amount : " + amount + "should not be superior than current balance.");
-				throw new IlegalTransException("withdraw amount should not be superior to the balance.", ErrorAmountType.OUT_OF_RANGE_AMOUNT);
+				logger.error("Illegale withdraw amount : " + amount + "should not be superior than current balance.");
+				throw new IllegalTransException("withdraw amount should not be superior to the balance.", ErrorAmountType.OUT_OF_RANGE_AMOUNT);
 			}
 			//account.withdraw(amount);
 			 account.setBalance(account.getBalance() - amount);

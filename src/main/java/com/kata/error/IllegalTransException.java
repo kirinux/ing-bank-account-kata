@@ -1,6 +1,6 @@
 package com.kata.error;
 
-public class IlegalTransException extends RuntimeException {
+public class IllegalTransException extends RuntimeException {
 	public enum ErrorAmountType{
 		NEGATIVE_AMOUNT,
 		ILEGAL_AMOUNT,
@@ -8,7 +8,7 @@ public class IlegalTransException extends RuntimeException {
 	}
 	 
 	private ErrorAmountType type;
-    public IlegalTransException(String msg, ErrorAmountType type) {
+    public IllegalTransException(String msg, ErrorAmountType type) {
         super(msg);
         this.type = type;
     }

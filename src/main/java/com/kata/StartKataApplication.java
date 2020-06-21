@@ -19,18 +19,6 @@ public class StartKataApplication {
         SpringApplication.run(StartKataApplication.class, args);
     }
     
-//    @Profile("demo")
-//    @Bean
-//    CommandLineRunner initCustomerDatabase(CustomerRepository repository) {
-//        return args -> {
-//        	Customer customer1= new Customer("ying");
-//        	repository.save(customer1); 
-//        	Customer customer2= new Customer("jenny");
-//        	//des.setId(repository.count()+1);
-//        	repository.save(customer2);
-//        };
-//    }
-    
     @Profile("demo")
     @Bean
     CommandLineRunner initDatabase(AccountRepository accountRepository, CustomerRepository custRepo) {

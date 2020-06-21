@@ -24,7 +24,7 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 	        response.sendError(HttpStatus.NOT_FOUND.value());
 	    }
 	 
-	 @ExceptionHandler(IlegalTransException.class)
+	 @ExceptionHandler(IllegalTransException.class)
 	 public void springIlegalTransaction(HttpServletResponse response) throws IOException {
 	       response.sendError(HttpStatus.BAD_REQUEST.value());
 	 }
