@@ -97,7 +97,7 @@ public class AccountServiceTest {
     		accountService.depositAndReportBalance(1L, amount);
         });
      
-        String expectedMessage = "Ilegale deposite amount, amount should be superior to 0.01";
+        String expectedMessage = "Illegal deposite amount, amount should be superior to 0.01";
         String actualMessage = exception.getMessage(); 
         assertEquals(ErrorAmountType.ILEGAL_AMOUNT, exception.getType());
         org.junit.jupiter.api.Assertions.assertTrue(actualMessage.contains(expectedMessage));
