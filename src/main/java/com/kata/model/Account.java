@@ -9,8 +9,6 @@ import javax.validation.constraints.NotNull;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import com.kata.error.IlegalTransException;
 @Entity
 public class Account {
 	private static final Logger logger = LogManager.getLogger(Account.class);
@@ -49,23 +47,23 @@ public class Account {
 		this.balance = amount;
 	}
 
-	public void add(double amount) throws IlegalTransException {
-		if (amount <= 0.01) {
-			logger.error("Ilegale deposite amount :" + amount);
-			throw new IlegalTransException("Ilegale deposite amount, amount should be superior to 0.01");
-		}
-		this.balance += amount;
-	}
+//	public void add(double amount) throws IlegalTransException {
+//		if (amount <= 0.01) {
+//			logger.error("Ilegale deposite amount :" + amount);
+//			throw new IlegalTransException("Ilegale deposite amount, amount should be superior to 0.01", ErrorAmountType.ILEGAL_AMOUNT);
+//		}
+//		this.balance += amount;
+//	}
 
-	public void withdraw(double amount) throws IlegalTransException {
-		if (amount <= 0) {
-			throw new IlegalTransException("withdraw amount should not be negative.");
-		}
-		if (amount > getBalance()) {
-			throw new IlegalTransException("withdraw amount should not be superior to the balance.");
-		}
-		this.balance -= amount;
-	}
+//	public void withdraw(double amount) throws IlegalTransException {
+//		if (amount <= 0) {
+//			throw new IlegalTransException("withdraw amount should not be negative.", ErrorAmountType.NEGATIVE_AMOUNT);
+//		}
+//		if (amount > getBalance()) {
+//			throw new IlegalTransException("withdraw amount should not be superior to the balance.", ErrorAmountType.OUT_OF_RANGE_AMOUNT);
+//		}
+//		this.balance -= amount;
+//	}
 
 	public Customer getCustomer() {
 		return customer;

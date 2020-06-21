@@ -1,7 +1,6 @@
 package com.kata.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -12,9 +11,7 @@ import java.util.Optional;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.*;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
@@ -23,8 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import com.kata.error.IlegalTransException;
-import com.kata.error.ObjectNotFoundException;
-import com.kata.error.ObjectNotFoundException.ObjectType;
+import com.kata.error.IlegalTransException.ErrorAmountType;
 import com.kata.model.Account;
 import com.kata.model.ActionType;
 import com.kata.model.Customer;
@@ -69,15 +65,17 @@ public class AccountServiceTest {
 
     @Test
     void test_find_account_OK() {
-        Assertions.assertThat(accountService.findAccountById(1L).getAccountId()).isEqualTo(1L);
+        Assertions.assertThat(accountService.findAccountById(1L).get().getAccountId()).isEqualTo(1L);
     }
     
     @Test
     void test_find_account_not_found() {
-    	ObjectNotFoundException exception= org.junit.jupiter.api.Assertions.assertThrows(ObjectNotFoundException.class, () -> {
-    		accountService.findAccountById(2L);
-        }); 
-    	org.junit.jupiter.api.Assertions.assertTrue(exception.getObjectType().equals(ObjectType.ACCOUNT) && exception.getId() == 2L);
+    	
+    	assertEquals(true, accountService.findAccountById(2L).isEmpty());
+//    	ObjectNotFoundException exception= org.junit.jupiter.api.Assertions.assertThrows(ObjectNotFoundException.class, () -> {
+//    		accountService.findAccountById(2L);
+//        }); 
+//    	org.junit.jupiter.api.Assertions.assertTrue(exception.getObjectType().equals(ObjectType.ACCOUNT) && exception.getId() == 2L);
     }
     
     @Test
@@ -100,6 +98,7 @@ public class AccountServiceTest {
      
         String expectedMessage = "Ilegale deposite amount, amount should be superior to 0.01";
         String actualMessage = exception.getMessage(); 
+        assertEquals(ErrorAmountType.ILEGAL_AMOUNT, exception.getType());
         org.junit.jupiter.api.Assertions.assertTrue(actualMessage.contains(expectedMessage));
     }
     
@@ -121,6 +120,28 @@ public class AccountServiceTest {
     	assertEquals(amount, captured.getAmount());	
     }
     
+    @Test
+    void test_withdraw_KO_amount_negative() {
+    	double amount = -20.0;
+    	IlegalTransException exception= org.junit.jupiter.api.Assertions.assertThrows(IlegalTransException.class, () -> {
+    		accountService.withdrawAndReportBalance(1L, amount);
+    	  }); 
+    	 String expectedMessage = "withdraw amount should not be negative.";
+         String actualMessage = exception.getMessage();
+         assertEquals(ErrorAmountType.NEGATIVE_AMOUNT, exception.getType());
+         assertEquals(expectedMessage, actualMessage);
+     }
     
+    @Test
+    void test_withdraw_KO_amount_out_of_range() {
+    	double amount = 20.0;
+    	IlegalTransException exception= org.junit.jupiter.api.Assertions.assertThrows(IlegalTransException.class, () -> {
+    		accountService.withdrawAndReportBalance(1L, amount);
+    	  }); 
+    	 String expectedMessage = "withdraw amount should not be superior to the balance.";
+         String actualMessage = exception.getMessage();
+         assertEquals(ErrorAmountType.OUT_OF_RANGE_AMOUNT, exception.getType());
+         assertEquals(expectedMessage, actualMessage);
+     }
 
 }

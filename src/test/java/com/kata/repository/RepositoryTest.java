@@ -1,21 +1,15 @@
 package com.kata.repository;
 
-import static org.mockito.Mockito.when;
-
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import com.kata.model.Account;
 import com.kata.model.ActionType;
@@ -24,8 +18,6 @@ import com.kata.model.Transaction;
 import com.kata.repo.AccountRepository;
 import com.kata.repo.CustomerRepository;
 import com.kata.repo.TransactionRepository;
-
-import net.bytebuddy.description.field.FieldDescription.InGenericShape;
 
 
 @DataJpaTest
