@@ -47,7 +47,7 @@ class AccountRestControllerTest {
     }
 
     @Test
-    void getBalance() throws Exception {
+    void shouldeGetBalanceBalance() throws Exception {
         Integer id = 1;
         when( accountService.getBalance(id)).thenReturn(Double.valueOf(50));
         mvc.perform(
@@ -57,7 +57,7 @@ class AccountRestControllerTest {
     }
 
     @Test
-    void should_deposit_money_and_return_ok_status() throws Exception{
+    void shouldDepositMoneyAndReturnOkStatus() throws Exception{
         Integer id = 1;
         Account account = new Account(1,100,null );
         Account accountRes = new Account(1,150,null );
@@ -71,7 +71,7 @@ class AccountRestControllerTest {
     }
 
     @Test
-    void withdraw() throws Exception {
+    void shouldWithdrawMoneyAndReturnOkStatus() throws Exception {
         Integer id = 1;
         Account account = new Account(1,150,null );
         Account accountRes = new Account(1,100,null );
@@ -85,7 +85,7 @@ class AccountRestControllerTest {
     }
 
     @Test
-    void getTransactionsHistory() throws Exception {
+    void shouldGetTransactionsHistory() throws Exception {
         int id=1;
         Account account = new Account(1,100,null );
         Transaction t1 = new Transaction(EnumTransactionType.WITH_DRAW.getValue(),   80, account, LocalDateTime.now());
@@ -107,7 +107,7 @@ class AccountRestControllerTest {
     }
 
     @Test
-    void should_find_account_and_ok_status() throws Exception{
+    void shouldAindAccountAndOkStatus() throws Exception{
         Integer id = 1;
         Account account = new Account(1,100,null );
         when(accountService.getAccount(id)).thenReturn(java.util.Optional.ofNullable(account));

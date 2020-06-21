@@ -9,6 +9,7 @@ import fr.ing.interview.bankaccountkata.model.Account;
 import fr.ing.interview.bankaccountkata.model.Customer;
 import fr.ing.interview.bankaccountkata.model.EnumTransactionType;
 import fr.ing.interview.bankaccountkata.model.Transaction;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
@@ -62,7 +63,12 @@ public class AccountServiceImpl implements AccountService {
         return account;
     }
 
-
+    /***
+     *
+     * @param idAccount
+     * @return
+     * @throws Exception
+     */
     @Override
     public double getBalance( int idAccount) throws Exception {
         Optional<Account> account = accountRepository.findById(idAccount);
@@ -71,16 +77,31 @@ public class AccountServiceImpl implements AccountService {
         }
     }
 
-
+    /***
+     *
+     * @param customer
+     * @param idAccount
+     * @return
+     */
     public List<Transaction> getTransactions(Customer customer, long idAccount) {
         return customer.getAccounts().stream().filter(a -> a.getIdAccount() == idAccount).findFirst().get().getTransactions();
     }
 
+    /***
+     *
+     * @param idAccount
+     * @return
+     */
     @Override
     public Optional<Account> getAccount(int idAccount) {
         return accountRepository.findById(idAccount);
     }
 
+    /***
+     *
+     * @param idCustomer
+     * @return
+     */
     @Override
     public Optional<Customer> getCustomer(int idCustomer) {
         return customerRepository.findById(idCustomer) ;

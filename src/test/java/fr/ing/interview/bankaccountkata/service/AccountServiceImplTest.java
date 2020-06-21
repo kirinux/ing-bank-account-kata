@@ -36,8 +36,7 @@ class AccountServiceImplTest {
     @Test
     void shouldUpdateAmountWhenDeposit() throws Exception {
         Account account = new Account(1, 100.0, new ArrayList<Transaction>(), 100.0, null);
-       // AccountService  accountServices = new AccountServiceImpl();
-        accountServices.deposit(100,account);
+         accountServices.deposit(100,account);
         assertEquals(account.getBalance(),200.0 );
     }
 
@@ -51,8 +50,7 @@ class AccountServiceImplTest {
     @Test
     void shouldSaveTransactionWhenDeposit() throws Exception {
         Account account = new Account(1, 200.0, new ArrayList<>(), 100.0, null);
-      //  AccountService  accountServices = new AccountServiceImpl();
-        accountServices.deposit(50.0,account);
+         accountServices.deposit(50.0,account);
         assertEquals(account.getTransactions().get(0).getAmount(),50.0 );
     }
 
@@ -74,7 +72,7 @@ class AccountServiceImplTest {
 
     @Test
     void shouldGetBalance() throws Exception {
-        AccountService  accountServices = new AccountServiceImpl();
+
         Account account1 = new Account();
         account1.setIdAccount(1);
         account1.setBalance(20.0);
@@ -89,7 +87,7 @@ class AccountServiceImplTest {
 
     @Test
     void shouldGetTransactions() throws Exception {
-       // AccountService  accountServices = new AccountServiceImpl();
+
         Account account = new Account(1, 100.0, new ArrayList<Transaction>());
         accountServices.deposit(100,account);
         accountServices.withdraw(80,account);
