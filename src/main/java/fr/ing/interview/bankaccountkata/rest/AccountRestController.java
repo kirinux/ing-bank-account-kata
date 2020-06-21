@@ -24,12 +24,14 @@ public class AccountRestController {
     @Autowired
     AccountService accountService;
 
+
+    @CrossOrigin
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Account> getAccount(@PathVariable Integer id) {
         Optional<Account> account = accountService.getAccount(id);
         return account.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
-
+    @CrossOrigin
     @PostMapping(value = "/deposit")
     public ResponseEntity<Account> deposit(@RequestParam Integer id,
                                                 @RequestParam double amount)   {
@@ -54,7 +56,7 @@ public class AccountRestController {
     }
 
 }
-
+    @CrossOrigin
     @PostMapping(value = "/withdraw")
     public ResponseEntity<Account> withdrawMoney(@RequestParam Integer id,
                                                  @RequestParam Double amount) throws Exception {
@@ -76,7 +78,7 @@ public class AccountRestController {
         throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(),e );
     }
     }
-
+    @CrossOrigin
     @GetMapping(value = "/transactions-history")
     public ResponseEntity<List<Transaction>> getTransactionsHistory(@RequestParam Integer idCustomer, @RequestParam Integer idAcount) {
         Customer customer = accountService.getCustomer(idCustomer).get();
@@ -85,7 +87,7 @@ public class AccountRestController {
     }
 
 
-
+    @CrossOrigin
     @GetMapping(value = "/balance/{idAccount}")
     public ResponseEntity<Double> getBalance(@PathVariable Integer idAccount) throws Exception {
         try{

@@ -1,8 +1,12 @@
 package fr.ing.interview.bankaccountkata.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.CreationTimestamp;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 
@@ -11,38 +15,49 @@ public class Transaction implements Serializable{
     @Id
     @GeneratedValue
     private Long idTransaction;
-
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long operationNumber;
-    private Date operationDate;
+    @CreationTimestamp
+    private LocalDateTime operationDate;
     private double amount;
-    @ManyToOne
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="ID_ACCOUNT")
     private Account account;
-    private EnumTransactionType transactionType;
+    private String transactionType;
 
     public Transaction() {
     }
 
-    public Transaction(Long operationNumber, LocalDate now, double amount, Account account) {
-        this.operationNumber = operationNumber;
-        this.operationDate = operationDate;
+    public Transaction(String type,  double amount, Account account,LocalDateTime operationDate) {
+        this.operationDate =  operationDate;
+        this.transactionType = type;
+        this.amount = amount;
+        this.account = account;
+    }
+    public Transaction(String type,  double amount, Account account) {
+        this.transactionType = type;
         this.amount = amount;
         this.account = account;
     }
 
-    public Long getOperationNumber() {
-        return operationNumber;
+    public Transaction(Long idTransaction,String type,  double amount, Account account,LocalDateTime operationDate) {
+        this.operationDate =  operationDate;
+        this.idTransaction =  idTransaction;
+        this.transactionType = type;
+        this.amount = amount;
+        this.account = account;
     }
 
-    public void setOperationNumber(Long operationNumber) {
-        this.operationNumber = operationNumber;
-    }
 
-    public Date getOperationDate() {
+
+
+    public LocalDateTime getOperationDate() {
         return operationDate;
     }
 
-    public void setOperationDate(Date operationDate) {
+    public void setOperationDate(LocalDateTime operationDate) {
         this.operationDate = operationDate;
     }
 
@@ -60,5 +75,21 @@ public class Transaction implements Serializable{
 
     public void setAccount(Account account) {
         this.account = account;
+    }
+
+    public Long getIdTransaction() {
+        return idTransaction;
+    }
+
+    public void setIdTransaction(Long idTransaction) {
+        this.idTransaction = idTransaction;
+    }
+
+    public String getTransactionType() {
+        return transactionType;
+    }
+
+    public void setTransactionType(String transactionType) {
+        this.transactionType = transactionType;
     }
 }

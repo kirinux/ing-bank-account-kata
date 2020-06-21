@@ -1,11 +1,14 @@
 package fr.ing.interview.bankaccountkata.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -17,14 +20,14 @@ public class Account implements Serializable{
     @Id
     @GeneratedValue
     private int idAccount;
-
     private double balance;
-    private Customer idClient;
-    @OneToMany(mappedBy = "account")
+    @OneToMany(mappedBy = "account", fetch = FetchType.EAGER)
     private List<Transaction> transactions;
     private double overdraft;
-    private Date creationDate;
 
+    @CreationTimestamp
+    private LocalDateTime creationDate;
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name="ID_CUSTOMER")
     private Customer customer;
@@ -40,15 +43,14 @@ public class Account implements Serializable{
 
     }
 
-    public Account(int idAccount, long amount, int idClient) {
+    public Account(int idAccount, long amount) {
         this.idAccount = idAccount;
         this.balance = amount;
     }
 
-    public Account(int idAccount, double balance, Customer idClient, List<Transaction> transactions, double overdraft, Date creationDate) {
+    public Account(int idAccount, double balance,  List<Transaction> transactions, double overdraft, LocalDateTime creationDate) {
         this.idAccount = idAccount;
         this.balance = balance;
-        this.idClient = idClient;
         this.transactions = transactions;
         this.overdraft = overdraft;
         this.creationDate = creationDate;
@@ -73,13 +75,6 @@ public class Account implements Serializable{
         this.balance = balance;
     }
 
-    public Customer getIdClient() {
-        return idClient;
-    }
-
-    public void setIdClient(Customer idClient) {
-        this.idClient = idClient;
-    }
 
     public List<Transaction> getTransactions() {
         if(this.transactions == null) return new ArrayList<>();
@@ -98,11 +93,23 @@ public class Account implements Serializable{
         this.overdraft = overdraft;
     }
 
-    public Date getCreationDate() {
-        return creationDate;
+    public LocalDateTime getCreationDate() {
+        return this.creationDate;
     }
 
-    public void setCreationDate(Date creationDate) {
+    public void setCreationDate(LocalDateTime creationDate) {
         this.creationDate = creationDate;
+    }
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "idAccount=" + idAccount +
+                ", balance=" + balance +
+                ", transactions=" + transactions +
+                ", overdraft=" + overdraft +
+                ", creationDate=" + creationDate +
+                ", customer=" + customer +
+                '}';
     }
 }

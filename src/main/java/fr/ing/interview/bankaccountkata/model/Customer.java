@@ -1,5 +1,6 @@
 package fr.ing.interview.bankaccountkata.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 import javax.persistence.*;
@@ -12,12 +13,12 @@ public class Customer implements Serializable{
     @Id
     @GeneratedValue
     private int idCustomer;
-
     private String firstName;
     private String lastName;
     private String adress;
     private String email;
-    @OneToMany(mappedBy = "customer",fetch = FetchType.LAZY)
+
+    @OneToMany(mappedBy = "customer",fetch = FetchType.EAGER)
     private List<Account> accounts;
 
     public Customer() {
@@ -35,7 +36,6 @@ public class Customer implements Serializable{
         this.lastName = lastName;
         this.adress = adress;
         this.email = email;
-
         this.accounts = accounts;
     }
 

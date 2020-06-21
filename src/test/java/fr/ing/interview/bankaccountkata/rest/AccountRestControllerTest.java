@@ -29,12 +29,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ActiveProfiles("test")
 @SpringBootTest
-class BankControllerTest {
+class AccountRestControllerTest {
 
 
     private MockMvc mvc;
     @InjectMocks
-    private BankController bankController;
+    private AccountRestController accountRestController;
     @Mock
     private AccountService accountService;
     @Mock
@@ -43,7 +43,7 @@ class BankControllerTest {
 
     @BeforeEach
     void setUp() {
-        mvc = MockMvcBuilders.standaloneSetup(bankController).build();
+        mvc = MockMvcBuilders.standaloneSetup(accountRestController).build();
     }
 
     @Test
