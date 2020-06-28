@@ -28,5 +28,9 @@ public class TransactionService {
 				return transactionRepository.findTransByAccount(accountId);
 			}
 			throw new ObjectNotFoundException(accountId, ObjectType.ACCOUNT);
-	 }	 
+	 }
+
+	public void save(Transaction transaction) {
+		transactionRepository.save(transaction);
+	}	 
 }

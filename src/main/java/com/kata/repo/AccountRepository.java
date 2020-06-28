@@ -10,7 +10,7 @@ import com.kata.model.Account;
 
 public interface AccountRepository extends JpaRepository<Account, Long> {
 	
-	@Query("SELECT a FROM Account a JOIN FETCH a.customer c WHERE c.id = :id")
-	List<Account> findAccountsByCustomer(@Param("id")long id);
+	@Query("SELECT a FROM Account a JOIN FETCH a.customer c WHERE c.id = :customerId")
+	List<Account> findAccountsByCustomer(@Param("customerId")long customerId);
 	
 }

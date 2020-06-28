@@ -1,5 +1,7 @@
 package com.kata.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -10,7 +12,8 @@ import javax.validation.constraints.NotNull;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 @Entity
-public class Account {
+public class Account{
+
 	private static final Logger logger = LogManager.getLogger(Account.class);
 
 	@Id
@@ -39,12 +42,16 @@ public class Account {
 		this.accountId = accountId;
 	}
 
-	public double getBalance() {
+	public synchronized double getBalance() {
 		return balance;
 	}
 	
-	public void setBalance(double amount) {
-		this.balance = amount;
+	public synchronized void deposit(double amount) {
+		this.balance += amount;
+	}
+	
+	public synchronized void withdraw(double amount) {
+		this.balance -= amount;
 	}
 
 //	public void add(double amount) throws IlegalTransException {

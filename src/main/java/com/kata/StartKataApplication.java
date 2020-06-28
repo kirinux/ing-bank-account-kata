@@ -3,6 +3,7 @@ package com.kata;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 
@@ -13,6 +14,7 @@ import com.kata.repo.CustomerRepository;
 
 
 @SpringBootApplication
+@EnableCaching
 public class StartKataApplication {
 	// start everything
     public static void main(String[] args) {

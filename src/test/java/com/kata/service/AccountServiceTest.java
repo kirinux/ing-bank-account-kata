@@ -1,6 +1,8 @@
 package com.kata.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -19,7 +21,6 @@ import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import com.kata.StartKataApplication;
 import com.kata.error.IllegalTransException;
 import com.kata.error.IllegalTransException.ErrorAmountType;
 import com.kata.model.Account;
@@ -78,71 +79,5 @@ public class AccountServiceTest {
 //        }); 
 //    	org.junit.jupiter.api.Assertions.assertTrue(exception.getObjectType().equals(ObjectType.ACCOUNT) && exception.getId() == 2L);
     }
-    
-    @Test
-    void test_deposit_ok() {
-    	double amount = 10.0;
-    	assertEquals(amount, accountService.depositAndReportBalance(1L, amount));
-    	verify(transactionRepo, times(1)).save(captor.capture());
-    	Transaction captured = captor.getValue();
-    	assertEquals(1L, captured.getAccount().getAccountId());
-    	assertEquals(ActionType.DEPOSIT, captured.getActionType());
-    	assertEquals(amount, captured.getAmount());	
-    }
-    
-    @Test
-    void test_deposit_amount_ilegal_KO() {
-    	double amount = -1;
-    	IllegalTransException exception = org.junit.jupiter.api.Assertions.assertThrows(IllegalTransException.class, () -> {
-    		accountService.depositAndReportBalance(1L, amount);
-        });
-     
-        String expectedMessage = "Illegal deposite amount, amount should be superior to 0.01";
-        String actualMessage = exception.getMessage(); 
-        assertEquals(ErrorAmountType.ILEGAL_AMOUNT, exception.getType());
-        org.junit.jupiter.api.Assertions.assertTrue(actualMessage.contains(expectedMessage));
-    }
-    
-    @Test
-    void test_withdraw_ok() {
-    	Customer customer = new Customer("Tim");
-    	customer.setId(3L);
-    	Account account = new Account(customer);
-    	account.setAccountId(3L);
-    	double balance = 60;
-    	account.setBalance(balance);
-    	when(accountRepo.findById(3L)).thenReturn(Optional.of(account));
-    	double amount = 20;
-    	assertEquals(balance-amount, accountService.withdrawAndReportBalance(3L, amount));
-    	verify(transactionRepo, times(1)).save(captor.capture());
-    	Transaction captured = captor.getValue();
-    	assertEquals(3L, captured.getAccount().getAccountId());
-    	assertEquals(ActionType.WITHDRAW, captured.getActionType());
-    	assertEquals(amount, captured.getAmount());	
-    }
-    
-    @Test
-    void test_withdraw_KO_amount_negative() {
-    	double amount = -20.0;
-    	IllegalTransException exception= org.junit.jupiter.api.Assertions.assertThrows(IllegalTransException.class, () -> {
-    		accountService.withdrawAndReportBalance(1L, amount);
-    	  }); 
-    	 String expectedMessage = "withdraw amount should not be negative.";
-         String actualMessage = exception.getMessage();
-         assertEquals(ErrorAmountType.NEGATIVE_AMOUNT, exception.getType());
-         assertEquals(expectedMessage, actualMessage);
-     }
-    
-    @Test
-    void test_withdraw_KO_amount_out_of_range() {
-    	double amount = 20.0;
-    	IllegalTransException exception= org.junit.jupiter.api.Assertions.assertThrows(IllegalTransException.class, () -> {
-    		accountService.withdrawAndReportBalance(1L, amount);
-    	  }); 
-    	 String expectedMessage = "withdraw amount should not be superior to the balance.";
-         String actualMessage = exception.getMessage();
-         assertEquals(ErrorAmountType.OUT_OF_RANGE_AMOUNT, exception.getType());
-         assertEquals(expectedMessage, actualMessage);
-     }
 
 }

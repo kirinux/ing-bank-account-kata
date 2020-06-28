@@ -27,6 +27,5 @@ public class ObjectNotFoundException extends RuntimeException {
 	public long getId() {
 		return id;
 	}
-	
 
 }
