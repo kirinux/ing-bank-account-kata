@@ -18,8 +18,8 @@ Your repository should have:
 * A `readme.md` file, explaining the possible details of your implementation and how to start your project.
 
 ### Technical constraints
-* Java@8 minimum
-* JUnit@5 + AssertJ@3
+* Java@11+
+* JUnit@5+
 
 ## The Kata
 ### MVP - Minimum Valuable Product
@@ -80,8 +80,8 @@ Votre repository doit contenir :
 * Un fichier `readme.md` qui explique les possibles subtilités de votre implémentation et comment lancer votre projet.
 
 ### Contraintes techniques
-* Java@8 minimum
-* JUnit@5 + AssertJ@3
+* Java@11+  
+* JUnit@5+  
 
 ## Le Kata
 ### Minimum Valuable Product - MVP
