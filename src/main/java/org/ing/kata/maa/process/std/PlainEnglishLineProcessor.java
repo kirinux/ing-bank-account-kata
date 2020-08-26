@@ -6,6 +6,7 @@ import org.ing.kata.maa.process.LineProcessor;
 import org.ing.kata.maa.service.AccountOperator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -26,12 +27,27 @@ public final class PlainEnglishLineProcessor
 
     private Account account;
 
+    @Autowired
     public PlainEnglishLineProcessor(final AccountOperator accountOperator)
     {
+        this(accountOperator, LoggerFactory.getLogger(PlainEnglishLineProcessor.class));
+    }
+
+    PlainEnglishLineProcessor(final AccountOperator accountOperator, Logger logger)
+    {
+        this(
+            accountOperator,
+            logger,
+            new Account("Jane", "Doe")
+        );
+    }
+
+    PlainEnglishLineProcessor(final AccountOperator accountOperator, Logger logger, Account initialAccount)
+    {
         super();
-        this.logger = LoggerFactory.getLogger(getClass());
+        this.logger = Objects.requireNonNull(logger, "logger == null");
         this.accountOperator = Objects.requireNonNull(accountOperator, "accountOperator == null");
-        this.account = new Account("Jane", "Doe");
+        this.account = Objects.requireNonNull(initialAccount, "initialAccount == null");
     }
 
     @Override
@@ -47,33 +63,37 @@ public final class PlainEnglishLineProcessor
         this.logger.debug("Command: {}", command);
         switch (command) {
             case "help":
-                if (stringTokenizer.hasMoreElements()) {
-                    throw onSyntaxError("Too many parameters passed to command " + command);
-                }
+                ensureNoMoreParameters(stringTokenizer, command);
                 printHelp(LogLevel.INFO);
+                break;
+            case "balance":
+                ensureNoMoreParameters(stringTokenizer, command);
+                reportAccountBalance();
                 break;
             case "withdraw": {
                 final BigDecimal amount = readMandatoryAmountParameter(stringTokenizer, command);
-                if (stringTokenizer.hasMoreElements()) {
-                    throw onSyntaxError("Too many parameters passed to command " + command);
-                }
+                ensureNoMoreParameters(stringTokenizer, command);
                 this.logger.debug("Withdraw of amount: {}", amount);
                 this.account = this.accountOperator.withdraw(this.account, amount);
-                reportNewAccountStatus();
             }
             break;
             case "deposit": {
                 final BigDecimal amount = readMandatoryAmountParameter(stringTokenizer, command);
-                if (stringTokenizer.hasMoreElements()) {
-                    throw onSyntaxError("Too many parameters passed to command " + command);
-                }
+                ensureNoMoreParameters(stringTokenizer, command);
                 this.logger.debug("Deposit of amount: {}", amount);
                 this.account = this.accountOperator.deposit(this.account, amount);
-                reportNewAccountStatus();
             }
             break;
             default:
                 throw onSyntaxError("Unknown command specified: " + command);
+        }
+    }
+
+    private void ensureNoMoreParameters(final StringTokenizer stringTokenizer, final String command)
+        throws OperationFailedException
+    {
+        if (stringTokenizer.hasMoreElements()) {
+            throw onSyntaxError("Too many parameters passed to command " + command);
         }
     }
 
@@ -88,15 +108,15 @@ public final class PlainEnglishLineProcessor
         try {
             amount = new BigDecimal(amountString);
         } catch (NumberFormatException e) {
-            throw new OperationFailedException("Invalid amount parameter specified: " + amountString, e);
+            throw onSyntaxError("Invalid amount parameter specified: " + amountString, e);
         }
         return amount;
     }
 
-    private void reportNewAccountStatus()
+    private void reportAccountBalance()
     {
         this.logger.info(
-            "New status for {} {}: {}",
+            "Account balance for {} {}: {}",
             this.account.getFirstName(),
             this.account.getLastName(),
             this.account.getStatus()
@@ -108,6 +128,8 @@ public final class PlainEnglishLineProcessor
         help.log(this.logger, "Syntax:");
         help.log(this.logger, "    deposit <amount>");
         help.log(this.logger, "        Adds <amount> to the current account. <amount> must not be lower than '0.1'.");
+        help.log(this.logger, "    balance");
+        help.log(this.logger, "        Displays the balance for the current account.");
         help.log(this.logger, "    withdraw <amount>");
         help.log(this.logger, "        Withdraws <amount> from the current account.");
         help.log(this.logger, "    help");
@@ -118,6 +140,12 @@ public final class PlainEnglishLineProcessor
     {
         printHelp(LogLevel.ERROR);
         return new OperationFailedException(message);
+    }
+
+    private OperationFailedException onSyntaxError(String message, Throwable throwable)
+    {
+        printHelp(LogLevel.ERROR);
+        return new OperationFailedException(message, throwable);
     }
 
     private enum LogLevel

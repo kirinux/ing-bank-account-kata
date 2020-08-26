@@ -15,6 +15,11 @@
 
 # Changelog
 
+## 1.2.0 - With support of balance
+
+- Added support for `balance` operation
+- Enhanced code coverage to also unit test the logs emitted
+
 ## 1.1.0 - With support of withdrawals
 
 - Added support for `withdraw` operation

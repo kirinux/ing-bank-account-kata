@@ -4,7 +4,7 @@
 
     <groupId>fr.ing.interview</groupId>
     <artifactId>bank-account-kata</artifactId>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -51,6 +51,10 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -139,6 +143,7 @@
                         </goals>
                         <configuration>
                             <rules>
+                                <!-- To ensure we don't try to build using an old JDK-->
                                 <requireJavaVersion>
                                     <version>11.0</version>
                                 </requireJavaVersion>
@@ -153,7 +158,9 @@
                 <executions>
                     <execution>
                         <goals>
+                            <!-- To ensure we don't declare dependencies which are actually unused -->
                             <goal>analyze-only</goal>
+                            <!-- To ensure that we don't depend on dependencies traditionally excluded from transitive dependencies -->
                             <goal>analyze-dep-mgt</goal>
                         </goals>
                         <phase>verify</phase>
