@@ -2,6 +2,7 @@ package org.ing.kata.maa.process.std;
 
 import org.ing.kata.maa.exception.OperationFailedException;
 import org.ing.kata.maa.model.Account;
+import org.ing.kata.maa.model.Transaction;
 import org.ing.kata.maa.process.LineProcessor;
 import org.ing.kata.maa.service.AccountOperator;
 import org.slf4j.Logger;
@@ -10,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.Objects;
 import java.util.StringTokenizer;
 
@@ -84,6 +88,23 @@ public final class PlainEnglishLineProcessor
                 this.account = this.accountOperator.deposit(this.account, amount);
             }
             break;
+            case "history": {
+                ensureNoMoreParameters(stringTokenizer, command);
+                this.logger.info("Transaction history for {} {}: ", account.getFirstName(), account.getLastName());
+                this.accountOperator
+                    .historyFor(account)
+                    .stream()
+                    .sorted(Comparator
+                                .comparing(Transaction :: getInstant)
+                                .reversed())
+                    .forEach(t -> this.logger.info(
+                        "  - {}: {} {} €",
+                        DateTimeFormatter.RFC_1123_DATE_TIME.format(t.getInstant().atZone(ZoneId.systemDefault())),
+                        t.getTransactionType(),
+                        t.getAmount()
+                    ));
+                break;
+            }
             default:
                 throw onSyntaxError("Unknown command specified: " + command);
         }
@@ -130,6 +151,8 @@ public final class PlainEnglishLineProcessor
         help.log(this.logger, "        Adds <amount> to the current account. <amount> must not be lower than '0.1'.");
         help.log(this.logger, "    balance");
         help.log(this.logger, "        Displays the balance for the current account.");
+        help.log(this.logger, "    history");
+        help.log(this.logger, "        Displays the transaction history for the current account.");
         help.log(this.logger, "    withdraw <amount>");
         help.log(this.logger, "        Withdraws <amount> from the current account.");
         help.log(this.logger, "    help");

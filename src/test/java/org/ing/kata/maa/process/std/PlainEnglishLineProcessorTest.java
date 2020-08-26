@@ -63,7 +63,7 @@ public final class PlainEnglishLineProcessorTest
     {
         createProcessor().perform("");
         this.inOrder
-            .verify(this.logger, Mockito.times(9))
+            .verify(this.logger, Mockito.times(standardHelpMessageSize()))
             .info(this.messageArgumentCaptor.capture());
         Assertions
             .assertThat(this.messageArgumentCaptor
@@ -83,7 +83,7 @@ public final class PlainEnglishLineProcessorTest
             .verify(this.logger, Mockito.times(1))
             .debug("Command: {}", "help");
         this.inOrder
-            .verify(this.logger, Mockito.times(9))
+            .verify(this.logger, Mockito.times(standardHelpMessageSize()))
             .info(this.messageArgumentCaptor.capture());
         Assertions
             .assertThat(this.messageArgumentCaptor
@@ -147,7 +147,7 @@ public final class PlainEnglishLineProcessorTest
             .verify(this.logger, Mockito.calls(1))
             .debug("Command: {}", "whatever");
         this.inOrder
-            .verify(this.logger, Mockito.times(9))
+            .verify(this.logger, Mockito.times(standardHelpMessageSize()))
             .error(this.messageArgumentCaptor.capture());
         Assertions
             .assertThat(this.messageArgumentCaptor
@@ -173,7 +173,7 @@ public final class PlainEnglishLineProcessorTest
             .verify(this.logger, Mockito.calls(1))
             .debug("Command: {}", "deposit");
         this.inOrder
-            .verify(this.logger, Mockito.times(9))
+            .verify(this.logger, Mockito.times(standardHelpMessageSize()))
             .error(this.messageArgumentCaptor.capture());
         Assertions
             .assertThat(this.messageArgumentCaptor
@@ -199,7 +199,7 @@ public final class PlainEnglishLineProcessorTest
             .verify(this.logger, Mockito.calls(1))
             .debug("Command: {}", "deposit");
         this.inOrder
-            .verify(this.logger, Mockito.times(9))
+            .verify(this.logger, Mockito.times(standardHelpMessageSize()))
             .error(this.messageArgumentCaptor.capture());
         Assertions
             .assertThat(this.messageArgumentCaptor
@@ -225,7 +225,7 @@ public final class PlainEnglishLineProcessorTest
             .verify(this.logger, Mockito.calls(1))
             .debug("Command: {}", "deposit");
         this.inOrder
-            .verify(this.logger, Mockito.times(9))
+            .verify(this.logger, Mockito.times(standardHelpMessageSize()))
             .error(this.messageArgumentCaptor.capture());
         Assertions
             .assertThat(this.messageArgumentCaptor
@@ -293,7 +293,7 @@ public final class PlainEnglishLineProcessorTest
             .verify(this.logger, Mockito.calls(1))
             .debug("Command: {}", "withdraw");
         this.inOrder
-            .verify(this.logger, Mockito.times(9))
+            .verify(this.logger, Mockito.times(standardHelpMessageSize()))
             .error(this.messageArgumentCaptor.capture());
         Assertions
             .assertThat(this.messageArgumentCaptor
@@ -319,7 +319,7 @@ public final class PlainEnglishLineProcessorTest
             .verify(this.logger, Mockito.calls(1))
             .debug("Command: {}", "withdraw");
         this.inOrder
-            .verify(this.logger, Mockito.times(9))
+            .verify(this.logger, Mockito.times(standardHelpMessageSize()))
             .error(this.messageArgumentCaptor.capture());
         Assertions
             .assertThat(this.messageArgumentCaptor
@@ -345,7 +345,7 @@ public final class PlainEnglishLineProcessorTest
             .verify(this.logger, Mockito.calls(1))
             .debug("Command: {}", "withdraw");
         this.inOrder
-            .verify(this.logger, Mockito.times(9))
+            .verify(this.logger, Mockito.times(standardHelpMessageSize()))
             .error(this.messageArgumentCaptor.capture());
         Assertions
             .assertThat(this.messageArgumentCaptor
@@ -395,8 +395,7 @@ public final class PlainEnglishLineProcessorTest
         this.inOrder.verifyNoMoreInteractions();
     }
 
-    private String standardHelpMessage()
-    {
+    private Stream<String> standardHelpMessageContents() {
         return Stream
                    .of(
                        "Syntax:",
@@ -404,11 +403,22 @@ public final class PlainEnglishLineProcessorTest
                        "        Adds <amount> to the current account. <amount> must not be lower than '0.1'.",
                        "    balance",
                        "        Displays the balance for the current account.",
+                       "    history",
+                       "        Displays the transaction history for the current account.",
                        "    withdraw <amount>",
                        "        Withdraws <amount> from the current account.",
                        "    help",
                        "        prints for this help"
-                   )
+                   );
+    }
+
+    private int standardHelpMessageSize() {
+        return (int)standardHelpMessageContents().count();
+    }
+
+    private String standardHelpMessage()
+    {
+        return standardHelpMessageContents()
                    .collect(Collectors.joining(System.lineSeparator()));
     }
 

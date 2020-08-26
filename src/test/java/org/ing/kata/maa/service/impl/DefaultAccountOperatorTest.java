@@ -3,10 +3,12 @@ package org.ing.kata.maa.service.impl;
 import org.assertj.core.api.Assertions;
 import org.ing.kata.maa.exception.OperationFailedException;
 import org.ing.kata.maa.model.Account;
+import org.ing.kata.maa.model.Transaction;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 
 import java.math.BigDecimal;
+import java.util.Comparator;
 
 /**
  * @author Antoine Malliarakis
@@ -95,4 +97,63 @@ public final class DefaultAccountOperatorTest
             .isEqualTo(BigDecimal.valueOf(7));
     }
 
+    @Test
+    public void withdraw_should_add_transaction(final TestInfo testInfo)
+        throws OperationFailedException
+    {
+        Account account = new Account(
+            "firstName-for-" + testInfo.getDisplayName(),
+            "lastName-for-" + testInfo.getDisplayName()
+        );
+        account.setStatus(BigDecimal.valueOf(11));
+        final DefaultAccountOperator accountOperator = new DefaultAccountOperator();
+        accountOperator.withdraw(account, BigDecimal.valueOf(7));
+        Assertions
+            .assertThat(accountOperator.historyFor(account))
+            .usingElementComparator(new TransactionComparator())
+            .containsExactly(
+                Transaction.withdrawal(BigDecimal.valueOf(7))
+            );
+    }
+
+    @Test
+    public void deposit_should_add_transaction(final TestInfo testInfo)
+        throws OperationFailedException
+    {
+        Account account = new Account(
+            "firstName-for-" + testInfo.getDisplayName(),
+            "lastName-for-" + testInfo.getDisplayName()
+        );
+        final DefaultAccountOperator accountOperator = new DefaultAccountOperator();
+        accountOperator.deposit(account, BigDecimal.valueOf(13));
+        Assertions
+            .assertThat(accountOperator.historyFor(account))
+            .usingElementComparator(new TransactionComparator())
+            .containsExactly(
+                Transaction.deposit(BigDecimal.valueOf(13))
+            );
+    }
+
+    private static final class TransactionComparator
+        implements Comparator<Transaction>
+    {
+
+        @Override
+        public int compare(final Transaction o1, final Transaction o2)
+        {
+            int result = o1
+                             .getAmount()
+                             .compareTo(o2.getAmount());
+            if (result != 0) {
+                return result;
+            }
+            result = o1
+                         .getTransactionType()
+                         .compareTo(o2.getTransactionType());
+            if (result != 0) {
+                return result;
+            }
+            return result;
+        }
+    }
 }
