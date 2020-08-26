@@ -34,4 +34,18 @@ public class DefaultAccountOperator
                                      .getStatus()
                                      .add(amount));
     }
+
+    @Override
+    public Account withdraw(final Account account, final BigDecimal amount)
+        throws OperationFailedException
+    {
+        if (amount.compareTo(account.getStatus()) >= 0) {
+            throw new OperationFailedException("Cannot withdraw " + amount + " ( > " + account.getStatus() + ")");
+        }
+        return account.setStatus(
+            account
+                .getStatus()
+                .subtract(amount)
+        );
+    }
 }

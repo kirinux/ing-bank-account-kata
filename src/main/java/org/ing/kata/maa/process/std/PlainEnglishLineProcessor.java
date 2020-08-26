@@ -52,39 +52,64 @@ public final class PlainEnglishLineProcessor
                 }
                 printHelp(LogLevel.INFO);
                 break;
-            case "deposit":
-                if (!stringTokenizer.hasMoreElements()) {
-                    throw onSyntaxError("Missing mandatory amount parameter for command " + command);
+            case "withdraw": {
+                final BigDecimal amount = readMandatoryAmountParameter(stringTokenizer, command);
+                if (stringTokenizer.hasMoreElements()) {
+                    throw onSyntaxError("Too many parameters passed to command " + command);
                 }
-                final BigDecimal amount;
-                final String amountString = stringTokenizer.nextToken();
-                try {
-                    amount = new BigDecimal(amountString);
-                } catch (NumberFormatException e) {
-                    throw new OperationFailedException("Invalid amount parameter specified: " + amountString, e);
-                }
+                this.logger.debug("Withdraw of amount: {}", amount);
+                this.account = this.accountOperator.withdraw(this.account, amount);
+                reportNewAccountStatus();
+            }
+            break;
+            case "deposit": {
+                final BigDecimal amount = readMandatoryAmountParameter(stringTokenizer, command);
                 if (stringTokenizer.hasMoreElements()) {
                     throw onSyntaxError("Too many parameters passed to command " + command);
                 }
                 this.logger.debug("Deposit of amount: {}", amount);
                 this.account = this.accountOperator.deposit(this.account, amount);
-                this.logger.info(
-                    "New status for {} {}: {}",
-                    this.account.getFirstName(),
-                    this.account.getLastName(),
-                    this.account.getStatus()
-                );
-                break;
+                reportNewAccountStatus();
+            }
+            break;
             default:
                 throw onSyntaxError("Unknown command specified: " + command);
         }
+    }
+
+    private BigDecimal readMandatoryAmountParameter(final StringTokenizer stringTokenizer, final String command)
+        throws OperationFailedException
+    {
+        if (!stringTokenizer.hasMoreElements()) {
+            throw onSyntaxError("Missing mandatory amount parameter for command " + command);
+        }
+        final BigDecimal amount;
+        final String amountString = stringTokenizer.nextToken();
+        try {
+            amount = new BigDecimal(amountString);
+        } catch (NumberFormatException e) {
+            throw new OperationFailedException("Invalid amount parameter specified: " + amountString, e);
+        }
+        return amount;
+    }
+
+    private void reportNewAccountStatus()
+    {
+        this.logger.info(
+            "New status for {} {}: {}",
+            this.account.getFirstName(),
+            this.account.getLastName(),
+            this.account.getStatus()
+        );
     }
 
     private void printHelp(LogLevel help)
     {
         help.log(this.logger, "Syntax:");
         help.log(this.logger, "    deposit <amount>");
-        help.log(this.logger, "        Adds <amount> to the current account.");
+        help.log(this.logger, "        Adds <amount> to the current account. <amount> must not be lower than '0.1'.");
+        help.log(this.logger, "    withdraw <amount>");
+        help.log(this.logger, "        Withdraws <amount> from the current account.");
         help.log(this.logger, "    help");
         help.log(this.logger, "        prints for this help");
     }

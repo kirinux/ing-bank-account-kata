@@ -145,5 +145,88 @@ public final class PlainEnglishLineProcessorTest
             .isEqualTo(
                 BigDecimal.valueOf(34)
             );
+        this.inOrder.verifyNoMoreInteractions();
+    }
+
+
+    @Test
+    public void an_invalid_withdrawal_gets_rejected_and_does_nothing()
+    {
+        Assertions
+            .assertThatCode(
+                () -> new PlainEnglishLineProcessor(accountOperator)
+                          .perform("withdraw")
+            )
+            .as("An error should have been thrown since the withdraw operation was missing parameters")
+            .isInstanceOf(OperationFailedException.class)
+            .hasMessage("Missing mandatory amount parameter for command withdraw");
+        this.inOrder.verifyNoMoreInteractions();
+    }
+
+    @Test
+    public void an_invalid_withdrawal_amount_gets_rejected_and_does_nothing()
+    {
+        Assertions
+            .assertThatCode(
+                () -> new PlainEnglishLineProcessor(accountOperator)
+                          .perform("withdraw something")
+            )
+            .as("Invalid error raised when withdraw amount is invalid.")
+            .hasMessage("Invalid amount parameter specified: something")
+            .isInstanceOf(OperationFailedException.class);
+        this.inOrder.verifyNoMoreInteractions();
+    }
+
+    @Test
+    public void withdraw_with_too_many_parameters_are_rejected()
+    {
+        Assertions
+            .assertThatCode(
+                () -> new PlainEnglishLineProcessor(accountOperator)
+                          .perform("withdraw 34 for the queen")
+            )
+            .as("Invalid error raised when withdraw parameters are too many")
+            .hasMessage("Too many parameters passed to command withdraw")
+            .isInstanceOf(OperationFailedException.class);
+        this.inOrder.verifyNoMoreInteractions();
+    }
+
+    @Test
+    public void valid_withdraw_command_is_appropriately_interpreted()
+        throws OperationFailedException
+    {
+        Mockito
+            .doAnswer(AdditionalAnswers.returnsFirstArg())
+            .when(this.accountOperator)
+            .withdraw(
+                Mockito.any(),
+                Mockito.any()
+            );
+        Assertions
+            .assertThatCode(
+                () -> new PlainEnglishLineProcessor(accountOperator).perform("withdraw 42")
+            )
+            .doesNotThrowAnyException();
+        this.inOrder
+            .verify(this.accountOperator)
+            .withdraw(
+                this.accountArgumentCaptor.capture(),
+                this.amountArgumentCaptor.capture()
+            );
+        Assertions
+            .assertThat(
+                this.accountArgumentCaptor.getValue()
+            )
+            .as("An unexpected parameter was passed for the account.")
+            .isNotEqualTo(null);
+        Assertions
+            .assertThat(this.amountArgumentCaptor.getValue())
+            .as(
+                "Invalid amount passed as argument to the withdraw operation"
+            )
+            .isEqualTo(
+                BigDecimal.valueOf(42)
+            );
+        this.inOrder.verifyNoMoreInteractions();
     }
 }

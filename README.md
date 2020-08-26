@@ -15,10 +15,14 @@
 
 # Changelog
 
+## 1.1.0 - With support of withdrawals
+
+- Added support for `withdraw` operation
+
 ## 1.0.0 - Initial version
 
 - A single account for "Jane Doe"
 - No persistence
-- Only deposit operations supported
+- Only `deposit` operations supported
 
 - Initial project skeleton with dependency validations, unit tests and packaging
