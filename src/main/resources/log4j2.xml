@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration strict="true">
+
+    <Appenders>
+        <Appender type="Console" name="STDOUT">
+            <Layout type="PatternLayout" pattern="%d{ISO8601} [%t] %c %m %n"/>
+        </Appender>
+        <Appender type="Console" name="MSG">
+            <Layout type="PatternLayout" pattern="%d{ISO8601} %level %m %n"/>
+        </Appender>
+    </Appenders>
+
+    <Loggers>
+        <Root level="INFO">
+            <AppenderRef ref="STDOUT"/>
+        </Root>
+        <Logger name="org.ing.kata.maa.process.std.PlainEnglishLineProcessor" additivity="false">
+            <AppenderRef ref="MSG"/>
+        </Logger>
+        <Logger name="org.ing.kata.maa.app.KataCommandLineRunner" additivity="false">
+            <AppenderRef ref="MSG"/>
+        </Logger>
+    </Loggers>
+
+</Configuration>
