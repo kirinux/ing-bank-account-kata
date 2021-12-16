@@ -1,0 +1,56 @@
+plugins {
+    id 'org.springframework.boot' version '2.2.2.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+    id 'java'
+}
+
+group = 'fr.ing.interview'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+	 implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
+    implementation group: 'org.postgresql', name: 'postgresql'
+    implementation group: 'org.mapstruct', name: 'mapstruct-jdk8', version: '1.2.0.Final'
+ 
+    
+	implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
+	implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
+	
+	testImplementation group: 'junit', name: 'junit', version: '4.12'
+	implementation group: 'org.springframework', name: 'spring-web'
+	
+    testAnnotationProcessor "org.mapstruct:mapstruct-processor:1.2.0.Final"
+   
+
+    annotationProcessor group: 'org.mapstruct', name: 'mapstruct-processor', version: '1.2.0.Final'
+
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    
+    
+}
+
+test {
+	useJUnitPlatform()
+}
+sourceSets {
+    main {
+        java {
+            srcDirs "${project.buildDir}/generated/sources/annotationProcessor/java/main"
+        }
+    }
+    test {
+        java {
+            srcDirs "${project.buildDir}/generated/sources/annotationProcessor/java/test"
+        }
+    }
+}
+
+
