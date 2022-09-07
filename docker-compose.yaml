@@ -1,0 +1,15 @@
+version: '3.9'
+
+services:
+  mongodbIng:
+    image: mongo:latest
+    ports:
+      - 27017:27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=milamed
+      - MONGO_INITDB_ROOT_PASSWORD=milamed
+    volumes:
+      - mongodbIng:/data/db
+
+volumes:
+  mongodbIng:
