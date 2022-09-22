@@ -1,0 +1,19 @@
+#====================================================================
+# DataBase Params
+#====================================================================
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/ign-db
+#      username:
+#      password:
+#      database: ign-db
+#      port: 27017
+#      host: localhost
+#====================================================================
+# Logging Params
+#====================================================================
+logging:
+  pattern:
+    dateformat: yyyy-MM-dd HH:mm:ss.SSS,Europe/Paris
+    console: '%highlight(%-5level) %d{yyyy-MM-dd HH:mm:ss} - %cyan(%logger) - %msg%n'
